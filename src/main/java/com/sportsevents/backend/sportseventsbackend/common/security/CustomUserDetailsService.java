@@ -1,6 +1,6 @@
 package com.sportsevents.backend.sportseventsbackend.common.security;
 
-import com.sportsevents.backend.sportseventsbackend.authorization.repository.UserRepository;
+import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

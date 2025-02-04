@@ -1,0 +1,16 @@
+package com.sportsevents.backend.sportseventsbackend.event.mapper;
+
+import com.sportsevents.backend.sportseventsbackend.common.config.MapperConfig;
+import com.sportsevents.backend.sportseventsbackend.event.dto.CreateEventRequestDto;
+import com.sportsevents.backend.sportseventsbackend.event.dto.EventDto;
+import com.sportsevents.backend.sportseventsbackend.event.model.Event;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(config = MapperConfig.class)
+public interface EventMapper {
+    Event toModel(CreateEventRequestDto eventDto);
+
+    @Mapping(source = "author.id", target = "authorId")
+    EventDto toDto(Event event);
+}

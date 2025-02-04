@@ -1,7 +1,7 @@
 package com.sportsevents.backend.sportseventsbackend.common.security;
 
-import com.sportsevents.backend.sportseventsbackend.authorization.dto.user.UserLoginRequestDto;
-import com.sportsevents.backend.sportseventsbackend.authorization.dto.user.UserLoginResponseDto;
+import com.sportsevents.backend.sportseventsbackend.user.dto.UserLoginRequestDto;
+import com.sportsevents.backend.sportseventsbackend.user.dto.UserLoginResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

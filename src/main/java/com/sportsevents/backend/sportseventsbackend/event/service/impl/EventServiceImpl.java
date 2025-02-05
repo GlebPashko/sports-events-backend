@@ -11,6 +11,7 @@ import com.sportsevents.backend.sportseventsbackend.event.repository.event.Event
 import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -63,11 +64,14 @@ public class EventServiceImpl implements EventService {
     }
 
     public void updateEventById(Long id, CreateEventRequestDto requestDto) {
-        // TODO: Реалізувати оновлення події за ID
+        Event event = eventRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
+                "Event with id: " + id + " not found"));
+        eventMapper.updateEventFromDto(requestDto, event);
+        eventRepository.save(event);
     }
 
     public void deleteEventById(Long id) {
-        // TODO: Реалізувати видалення події (помітити is_deleted = true)
+        eventRepository.deleteById(id);
     }
 
     private User getAuthenticatedUser() {

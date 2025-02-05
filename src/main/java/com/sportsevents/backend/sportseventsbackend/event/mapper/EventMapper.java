@@ -7,6 +7,7 @@ import com.sportsevents.backend.sportseventsbackend.event.model.Event;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapperConfig.class)
 public interface EventMapper {
@@ -16,4 +17,6 @@ public interface EventMapper {
     EventDto toDto(Event event);
 
     List<EventDto> toDtoList(List<Event> events);
+
+    void updateEventFromDto(CreateEventRequestDto requestDto, @MappingTarget Event event);
 }

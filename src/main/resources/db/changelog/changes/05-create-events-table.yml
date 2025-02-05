@@ -35,12 +35,15 @@ databaseChangeLog:
                   name: main_image
                   type: varchar(255)
               - column:
+                  name: video_link
+                  type: varchar(255)
+              - column:
                   name: maximum_participants
                   type: decimal(10,2)
                   constraints:
                     nullable: false
               - column:
-                  name: date
+                  name: date_of_start_event
                   type: timestamp
                   constraints:
                     nullable: false
@@ -55,7 +58,12 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: available_until
+                  name: city
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: registration_available_until
                   type: timestamp
                   constraints:
                     nullable: false

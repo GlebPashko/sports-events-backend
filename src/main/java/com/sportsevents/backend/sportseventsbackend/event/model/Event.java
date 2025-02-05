@@ -37,22 +37,26 @@ public class Event {
     private String avatarImage;
     @Column(name = "main_image")
     private String mainImage;
+    @Column(name = "video_link")
+    private String videoLink;
     @Column(name = "maximum_participants", nullable = false)
     private BigDecimal maximumParticipants;
-    @Column(nullable = false)
-    private LocalDateTime date;
+    @Column(name = "date_of_start_event",nullable = false)
+    private LocalDateTime dateOfStartEvent;
     @Column(nullable = false)
     private BigDecimal price;
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    @Column(nullable = false, updatable = false)
+    private String city;
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
     @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
-    @Column(name = "available_until", nullable = false)
-    private LocalDateTime availableUntil;
+    @Column(name = "registration_available_until", nullable = false)
+    private LocalDateTime registrationAvailableUntil;
 
     @PrePersist
     protected void onCreate() {

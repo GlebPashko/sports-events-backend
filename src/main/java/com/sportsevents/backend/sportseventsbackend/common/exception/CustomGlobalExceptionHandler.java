@@ -1,6 +1,7 @@
 package com.sportsevents.backend.sportseventsbackend.common.exception;
 
 import com.sportsevents.backend.sportseventsbackend.user.exception.RegistrationException;
+import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -56,6 +57,18 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
         Map<String, Object> body = getBodyMassage(List.of("Invalid username or password"),
                 HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<Object> handleJwtException(JwtException ex) {
+        Map<String, Object> body = getBodyMassage(List.of(ex.getMessage()), HttpStatus.UNAUTHORIZED );
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
+        Map<String, Object> body = getBodyMassage(List.of(ex.getMessage() + "The JWT token have invalid format"), HttpStatus.UNAUTHORIZED );
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 

@@ -21,14 +21,18 @@ public class CreateEventRequestDto {
     private String avatarImage;
     @NotBlank
     private String mainImage;
+    @NotBlank
+    private String videoLink;
     @Positive
     private BigDecimal maximumParticipants;
     @Future
     @NotNull
-    private LocalDateTime date;
+    private LocalDateTime dateOfStartEvent;
     @PositiveOrZero
     private BigDecimal price;
+    @NotBlank
+    private String city;
     @Future
     @NotNull
-    private LocalDateTime availableUntil;
+    private LocalDateTime registrationAvailableUntil;
 }

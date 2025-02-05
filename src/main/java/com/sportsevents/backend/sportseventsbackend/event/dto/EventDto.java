@@ -12,11 +12,13 @@ public class EventDto {
     private String descriptionFull;
     private String avatarImage;
     private String mainImage;
+    private String videoLink;
     private BigDecimal maximumParticipants;
-    private LocalDateTime date;
+    private LocalDateTime dateOfStartEvent;
     private BigDecimal price;
     private LocalDateTime createdAt;
+    private String city;
     private Long authorId;
-    private LocalDateTime availableUntil;
+    private LocalDateTime registrationAvailableUntil;
 }
 

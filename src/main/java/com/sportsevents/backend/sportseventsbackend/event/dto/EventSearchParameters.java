@@ -9,8 +9,8 @@ public record EventSearchParameters(
         BigDecimal maxPrice,
         LocalDateTime startDate,
         LocalDateTime endDate,
-        Integer minParticipants,
-        Integer maxParticipants,
+        BigDecimal minParticipants,
+        BigDecimal maxParticipants,
         String city,
         Boolean onlyAvailable
 ) {}

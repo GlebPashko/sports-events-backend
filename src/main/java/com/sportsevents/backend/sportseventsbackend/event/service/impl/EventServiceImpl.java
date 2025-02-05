@@ -2,16 +2,20 @@ package com.sportsevents.backend.sportseventsbackend.event.service.impl;
 
 import com.sportsevents.backend.sportseventsbackend.event.dto.CreateEventRequestDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventDto;
+import com.sportsevents.backend.sportseventsbackend.event.dto.EventPageableDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventSearchParameters;
 import com.sportsevents.backend.sportseventsbackend.event.mapper.EventMapper;
 import com.sportsevents.backend.sportseventsbackend.event.model.Event;
-import com.sportsevents.backend.sportseventsbackend.event.repository.EventRepository;
+import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventRepository;
+import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventSpecificationBuilder;
 import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,7 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final EventMapper eventMapper;
+    private final EventSpecificationBuilder specificationBuilder;
 
     public EventDto saveEvent(CreateEventRequestDto requestDto) {
         User user = getAuthenticatedUser();
@@ -33,22 +38,32 @@ public class EventServiceImpl implements EventService {
     }
 
     public EventDto findEventById(Long id) {
-        // TODO: Реалізувати пошук події за ID
-        return null;
+        Event event = eventRepository.findById(id).orElseThrow();
+        EventDto eventDto = eventMapper.toDto(event);
+        return eventDto;
     }
 
-    public List<EventDto> findAllEvents(Pageable pageable) {
-        // TODO: Реалізувати отримання всіх подій
-        return null;
+    public EventPageableDto findAllEvents(Pageable pageable) {
+        Page<Event> page = eventRepository.findAll(pageable);
+
+        EventPageableDto eventPageableDto = new EventPageableDto();
+        eventPageableDto.setEvents(eventMapper.toDtoList(page.getContent()));
+        eventPageableDto.setThisPage(page.getNumber());
+        eventPageableDto.setTotalPages(page.getTotalPages());
+        eventPageableDto.setHasNextPage(page.hasNext());
+        eventPageableDto.setHasPreviousPage(page.hasPrevious());
+        eventPageableDto.setTotalElements(page.getTotalElements());
+
+        return eventPageableDto;
+    }
+
+    public List<EventDto> searchEvents(EventSearchParameters searchParameters, Pageable pageable) {
+        Specification<Event> specification = specificationBuilder.build(searchParameters);
+        return eventMapper.toDtoList(eventRepository.findAll(specification, pageable));
     }
 
     public void updateEventById(Long id, CreateEventRequestDto requestDto) {
         // TODO: Реалізувати оновлення події за ID
-    }
-
-    public List<EventDto> searchEvents(EventSearchParameters searchParameters, Pageable pageable) {
-        // TODO: Реалізувати пошук подій за параметрами
-        return null;
     }
 
     public void deleteEventById(Long id) {

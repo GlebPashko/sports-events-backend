@@ -9,8 +9,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(config = MapperConfig.class, uses = CategoryMapper.class)
 public interface EventMapper {
+    @Mapping(target = "categories", source = "categoryIds", qualifiedByName = "categoryById")
     Event toModel(CreateEventRequestDto eventDto);
 
     @Mapping(source = "author.id", target = "authorId")

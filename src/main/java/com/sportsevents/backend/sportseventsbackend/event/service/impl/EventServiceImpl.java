@@ -6,6 +6,7 @@ import com.sportsevents.backend.sportseventsbackend.event.dto.EventPageableDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventSearchParameters;
 import com.sportsevents.backend.sportseventsbackend.event.mapper.EventMapper;
 import com.sportsevents.backend.sportseventsbackend.event.model.Event;
+import com.sportsevents.backend.sportseventsbackend.event.repository.category.CategoryRepository;
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventRepository;
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventSpecificationBuilder;
 import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
     private final EventMapper eventMapper;
     private final EventSpecificationBuilder specificationBuilder;
 
@@ -35,6 +37,7 @@ public class EventServiceImpl implements EventService {
         event.setAuthor(user);
         eventRepository.save(event);
         EventDto eventDto = eventMapper.toDto(event);
+        eventDto.setCategoryIds(requestDto.getCategoryIds());
         return eventDto;
     }
 
@@ -57,6 +60,30 @@ public class EventServiceImpl implements EventService {
         Specification<Event> specification = specificationBuilder.build(searchParameters);
 
         Page<Event> page = eventRepository.findAll(specification, pageable);
+
+        return createPageableDto(page);
+    }
+
+    @Override
+    public EventPageableDto findAllByCategoryId(Long id, Pageable pageable) {
+        Page<Event> page = eventRepository.findAllByCategoryId(id, pageable);
+
+        return createPageableDto(page);
+    }
+
+    @Override
+    public EventPageableDto searchByCategoryId(Long id,
+                                               EventSearchParameters searchParameters,
+                                               Pageable pageable) {
+        Specification<Event> specification = specificationBuilder.build(searchParameters);
+
+        Specification<Event> categorySpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.join("categories").get("id"), id);
+
+        Specification<Event> finalSpec = specification
+                == null ? categorySpec : specification.and(categorySpec);
+
+        Page<Event> page = eventRepository.findAll(finalSpec, pageable);
 
         return createPageableDto(page);
     }

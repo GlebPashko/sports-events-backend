@@ -9,3 +9,9 @@ databaseChangeLog:
       file: db/changelog/changes/04-insert-roles.yml
   - include:
       file: db/changelog/changes/05-create-events-table.yml
+  - include:
+      file: db/changelog/changes/06-create-categories-table.yml
+  - include:
+      file: db/changelog/changes/07-create-events-categories-table.yml
+  - include:
+      file: db/changelog/changes/91-insert-categories.yml

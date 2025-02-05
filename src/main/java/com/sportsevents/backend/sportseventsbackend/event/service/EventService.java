@@ -15,6 +15,12 @@ public interface EventService {
 
     EventPageableDto searchEvents(EventSearchParameters searchParameters, Pageable pageable);
 
+    EventPageableDto findAllByCategoryId(Long id, Pageable pageable);
+
+    EventPageableDto searchByCategoryId(Long id,
+                                        EventSearchParameters searchParameters,
+                                        Pageable pageable);
+
     void updateEventById(Long id, CreateEventRequestDto requestDto);
 
     void deleteEventById(Long id);

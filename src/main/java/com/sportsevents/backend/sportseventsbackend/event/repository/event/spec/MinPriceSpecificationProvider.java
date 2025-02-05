@@ -18,6 +18,7 @@ public class MinPriceSpecificationProvider implements SpecificationProvider<Even
     @Override
     public Specification<Event> getSpecification(String[] params) {
         BigDecimal minPrice = new BigDecimal(params[0]);
-        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice);
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice);
     }
 }

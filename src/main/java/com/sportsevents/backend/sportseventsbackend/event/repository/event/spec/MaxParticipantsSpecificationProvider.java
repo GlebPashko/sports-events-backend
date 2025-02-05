@@ -17,6 +17,7 @@ public class MaxParticipantsSpecificationProvider implements SpecificationProvid
     @Override
     public Specification<Event> getSpecification(String[] params) {
         Integer maxParticipants = Integer.parseInt(params[0]);
-        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("maximumParticipants"), maxParticipants);
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.lessThanOrEqualTo(root.get("maximumParticipants"), maxParticipants);
     }
 }

@@ -17,6 +17,8 @@ public class MinParticipantsSpecificationProvider implements SpecificationProvid
     @Override
     public Specification<Event> getSpecification(String[] params) {
         Integer minParticipants = Integer.parseInt(params[0]);
-        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("maximumParticipants"), minParticipants);
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.greaterThanOrEqualTo(
+                        root.get("maximumParticipants"), minParticipants);
     }
 }

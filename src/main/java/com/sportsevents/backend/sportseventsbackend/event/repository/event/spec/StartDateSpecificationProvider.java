@@ -18,6 +18,7 @@ public class StartDateSpecificationProvider implements SpecificationProvider<Eve
     @Override
     public Specification<Event> getSpecification(String[] params) {
         LocalDateTime startDate = LocalDateTime.parse(params[0]);
-        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("dateOfStartEvent"), startDate);
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.greaterThanOrEqualTo(root.get("dateOfStartEvent"), startDate);
     }
 }

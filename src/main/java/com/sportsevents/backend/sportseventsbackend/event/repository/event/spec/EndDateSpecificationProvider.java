@@ -18,6 +18,7 @@ public class EndDateSpecificationProvider implements SpecificationProvider<Event
     @Override
     public Specification<Event> getSpecification(String[] params) {
         LocalDateTime endDate = LocalDateTime.parse(params[0]);
-        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("dateOfStartEvent"), endDate);
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.lessThanOrEqualTo(root.get("dateOfStartEvent"), endDate);
     }
 }

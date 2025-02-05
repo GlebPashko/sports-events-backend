@@ -17,6 +17,7 @@ public class OnlyAvailableSpecificationProvider implements SpecificationProvider
     @Override
     public Specification<Event> getSpecification(String[] params) {
         Boolean onlyAvailable = Boolean.parseBoolean(params[0]);
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(ONLY_AVAILABLE_FIELD), onlyAvailable);
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get(ONLY_AVAILABLE_FIELD), onlyAvailable);
     }
 }

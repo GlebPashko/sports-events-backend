@@ -62,13 +62,16 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<Object> handleJwtException(JwtException ex) {
-        Map<String, Object> body = getBodyMassage(List.of(ex.getMessage()), HttpStatus.UNAUTHORIZED );
+        Map<String, Object> body = getBodyMassage(
+                List.of(ex.getMessage()), HttpStatus.UNAUTHORIZED);
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
-        Map<String, Object> body = getBodyMassage(List.of(ex.getMessage() + "The JWT token have invalid format"), HttpStatus.UNAUTHORIZED );
+        Map<String, Object> body = getBodyMassage(
+                List.of(ex.getMessage() + "The JWT token have invalid format"),
+                HttpStatus.UNAUTHORIZED);
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 

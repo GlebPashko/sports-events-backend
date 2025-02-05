@@ -18,6 +18,7 @@ public class MaxPriceSpecificationProvider implements SpecificationProvider<Even
     @Override
     public Specification<Event> getSpecification(String[] params) {
         BigDecimal maxPrice = new BigDecimal(params[0]);
-        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice);
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice);
     }
 }

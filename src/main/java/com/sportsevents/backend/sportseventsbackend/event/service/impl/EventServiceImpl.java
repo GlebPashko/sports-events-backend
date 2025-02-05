@@ -12,11 +12,11 @@ import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,9 @@ public class EventServiceImpl implements EventService {
     }
 
     public EventDto findEventById(Long id) {
-        Event event = eventRepository.findById(id).orElseThrow();
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                "Event with id: " + id + " not found"));
         EventDto eventDto = eventMapper.toDto(event);
         return eventDto;
     }
@@ -47,6 +49,54 @@ public class EventServiceImpl implements EventService {
     public EventPageableDto findAllEvents(Pageable pageable) {
         Page<Event> page = eventRepository.findAll(pageable);
 
+        return createPageableDto(page);
+    }
+
+    public EventPageableDto searchEvents(EventSearchParameters searchParameters,
+                                         Pageable pageable) {
+        Specification<Event> specification = specificationBuilder.build(searchParameters);
+
+        Page<Event> page = eventRepository.findAll(specification, pageable);
+
+        return createPageableDto(page);
+    }
+
+    public void updateEventById(Long id, CreateEventRequestDto requestDto) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Event with id: " + id + " not found"));
+
+        User currentUser = getAuthenticatedUser();
+        if (!event.getAuthor().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException("You are not the author of this event.");
+        }
+
+        eventMapper.updateEventFromDto(requestDto, event);
+        eventRepository.save(event);
+    }
+
+    public void deleteEventById(Long id) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Event with id: " + id + " not found"));
+
+        User currentUser = getAuthenticatedUser();
+        if (!event.getAuthor().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException("You are not the author of this event.");
+        }
+
+        eventRepository.deleteById(event.getId());
+    }
+
+    private User getAuthenticatedUser() {
+        String userEmail = SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal().toString();
+        return userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "User not found with email: " + userEmail));
+    }
+
+    private EventPageableDto createPageableDto(Page page) {
         EventPageableDto eventPageableDto = new EventPageableDto();
         eventPageableDto.setEvents(eventMapper.toDtoList(page.getContent()));
         eventPageableDto.setThisPage(page.getNumber());
@@ -56,28 +106,6 @@ public class EventServiceImpl implements EventService {
         eventPageableDto.setTotalElements(page.getTotalElements());
 
         return eventPageableDto;
-    }
-
-    public List<EventDto> searchEvents(EventSearchParameters searchParameters, Pageable pageable) {
-        Specification<Event> specification = specificationBuilder.build(searchParameters);
-        return eventMapper.toDtoList(eventRepository.findAll(specification, pageable));
-    }
-
-    public void updateEventById(Long id, CreateEventRequestDto requestDto) {
-        Event event = eventRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(
-                "Event with id: " + id + " not found"));
-        eventMapper.updateEventFromDto(requestDto, event);
-        eventRepository.save(event);
-    }
-
-    public void deleteEventById(Long id) {
-        eventRepository.deleteById(id);
-    }
-
-    private User getAuthenticatedUser() {
-        String userEmail = SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal().toString();
-        return userRepository.findByEmail(userEmail).orElseThrow(); // TODO: Need to throw exception
     }
 }
 

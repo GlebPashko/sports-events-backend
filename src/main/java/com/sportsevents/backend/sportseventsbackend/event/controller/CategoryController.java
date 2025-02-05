@@ -1,6 +1,5 @@
 package com.sportsevents.backend.sportseventsbackend.event.controller;
 
-import com.sportsevents.backend.sportseventsbackend.event.dto.EventDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventPageableDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventSearchParameters;
 import com.sportsevents.backend.sportseventsbackend.event.dto.category.CategoryDto;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -80,8 +78,9 @@ public class CategoryController {
     @Operation(summary = "Find all events by category id and parameters")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}/events/search")
-    public EventPageableDto searchBooksByCategoryId(@PathVariable Long id, EventSearchParameters searchParameters,
-                                                 Pageable pageable) {
+    public EventPageableDto searchBooksByCategoryId(@PathVariable Long id,
+                                                    EventSearchParameters searchParameters,
+                                                    Pageable pageable) {
         return eventService.searchByCategoryId(id, searchParameters, pageable);
     }
 }

@@ -5,7 +5,6 @@ import com.sportsevents.backend.sportseventsbackend.event.dto.EventDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventPageableDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventSearchParameters;
 import com.sportsevents.backend.sportseventsbackend.event.mapper.EventMapper;
-import com.sportsevents.backend.sportseventsbackend.event.model.Category;
 import com.sportsevents.backend.sportseventsbackend.event.model.Event;
 import com.sportsevents.backend.sportseventsbackend.event.repository.category.CategoryRepository;
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventRepository;
@@ -14,7 +13,6 @@ import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -66,6 +64,30 @@ public class EventServiceImpl implements EventService {
         return createPageableDto(page);
     }
 
+    @Override
+    public EventPageableDto findAllByCategoryId(Long id, Pageable pageable) {
+        Page<Event> page = eventRepository.findAllByCategoryId(id, pageable);
+
+        return createPageableDto(page);
+    }
+
+    @Override
+    public EventPageableDto searchByCategoryId(Long id,
+                                               EventSearchParameters searchParameters,
+                                               Pageable pageable) {
+        Specification<Event> specification = specificationBuilder.build(searchParameters);
+
+        Specification<Event> categorySpec = (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.join("categories").get("id"), id);
+
+        Specification<Event> finalSpec = specification
+                == null ? categorySpec : specification.and(categorySpec);
+
+        Page<Event> page = eventRepository.findAll(finalSpec, pageable);
+
+        return createPageableDto(page);
+    }
+
     public void updateEventById(Long id, CreateEventRequestDto requestDto) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -92,28 +114,6 @@ public class EventServiceImpl implements EventService {
 
         eventRepository.deleteById(event.getId());
     }
-
-    @Override
-    public EventPageableDto findAllByCategoryId(Long id, Pageable pageable) {
-        Page<Event> page = eventRepository.findAllByCategoryId(id, pageable);
-
-        return createPageableDto(page);
-    }
-
-    @Override
-    public EventPageableDto searchByCategoryId(Long id, EventSearchParameters searchParameters, Pageable pageable) {
-        Specification<Event> specification = specificationBuilder.build(searchParameters);
-
-        Specification<Event> categorySpec = (root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.join("categories").get("id"), id);
-
-        Specification<Event> finalSpec = specification == null ? categorySpec : specification.and(categorySpec);
-
-        Page<Event> page = eventRepository.findAll(finalSpec, pageable);
-
-        return createPageableDto(page);
-    }
-
 
     private User getAuthenticatedUser() {
         String userEmail = SecurityContextHolder.getContext()

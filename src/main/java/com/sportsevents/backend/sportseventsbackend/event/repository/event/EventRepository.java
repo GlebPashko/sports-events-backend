@@ -1,6 +1,5 @@
 package com.sportsevents.backend.sportseventsbackend.event.repository.event;
 
-import com.sportsevents.backend.sportseventsbackend.event.model.Category;
 import com.sportsevents.backend.sportseventsbackend.event.model.Event;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

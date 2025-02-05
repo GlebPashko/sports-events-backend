@@ -1,6 +1,5 @@
 package com.sportsevents.backend.sportseventsbackend.event.mapper;
 
-
 import com.sportsevents.backend.sportseventsbackend.common.config.MapperConfig;
 import com.sportsevents.backend.sportseventsbackend.event.dto.category.CategoryDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.category.CreateCategoryRequestDto;
@@ -19,7 +18,7 @@ public interface CategoryMapper {
     Category toEntity(CreateCategoryRequestDto requestDto);
 
     void updateCategoryFromDto(CreateCategoryRequestDto requestDto,
-                                   @MappingTarget Category category);
+                               @MappingTarget Category category);
 
     @Named("categoryById")
     default Category categoryById(Long id) {

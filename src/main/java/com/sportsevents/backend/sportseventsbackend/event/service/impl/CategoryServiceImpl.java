@@ -9,7 +9,6 @@ import com.sportsevents.backend.sportseventsbackend.event.service.CategoryServic
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

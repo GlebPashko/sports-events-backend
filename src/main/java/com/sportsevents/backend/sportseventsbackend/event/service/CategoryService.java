@@ -4,7 +4,6 @@ import com.sportsevents.backend.sportseventsbackend.event.dto.category.CategoryD
 import com.sportsevents.backend.sportseventsbackend.event.dto.category.CreateCategoryRequestDto;
 import java.util.List;
 
-
 public interface CategoryService {
     CategoryDto save(CreateCategoryRequestDto requestDto);
 

@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 import lombok.Data;
 
 @Data
@@ -35,4 +36,5 @@ public class CreateEventRequestDto {
     @Future
     @NotNull
     private LocalDateTime registrationAvailableUntil;
+    private Set<Long> categoryIds;
 }

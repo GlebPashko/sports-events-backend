@@ -2,6 +2,7 @@ package com.sportsevents.backend.sportseventsbackend.event.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 import lombok.Data;
 
 @Data
@@ -20,5 +21,6 @@ public class EventDto {
     private String city;
     private Long authorId;
     private LocalDateTime registrationAvailableUntil;
+    private Set<Long> categoryIds;
 }
 

@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-categories
+      author: hlieb
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: "Fitness"
+              - column:
+                  name: description
+                  value: "Events related to fitness training and workouts"
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: "Yoga"
+              - column:
+                  name: description
+                  value: "Yoga classes and meditation events"
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: "Running"
+              - column:
+                  name: description
+                  value: "Marathons, running clubs, and races"
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: "Cycling"
+              - column:
+                  name: description
+                  value: "Cycling meetups and competitions"
+              - column:
+                  name: is_deleted
+                  value: "0"
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: "Swimming"
+              - column:
+                  name: description
+                  value: "Swimming and water-based activities"
+              - column:
+                  name: is_deleted
+                  value: "0"

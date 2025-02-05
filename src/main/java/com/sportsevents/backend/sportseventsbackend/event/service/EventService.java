@@ -4,6 +4,7 @@ import com.sportsevents.backend.sportseventsbackend.event.dto.CreateEventRequest
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventPageableDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventSearchParameters;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 public interface EventService {
@@ -18,5 +19,9 @@ public interface EventService {
     void updateEventById(Long id, CreateEventRequestDto requestDto);
 
     void deleteEventById(Long id);
+
+    EventPageableDto findAllByCategoryId(Long id, Pageable pageable);
+
+    EventPageableDto searchByCategoryId(Long id, EventSearchParameters searchParameters, Pageable pageable);
 }
 

@@ -1,7 +1,12 @@
 package com.sportsevents.backend.sportseventsbackend.common.exception;
 
-import com.sportsevents.backend.sportseventsbackend.authorization.exception.RegistrationException;
+import com.sportsevents.backend.sportseventsbackend.user.exception.RegistrationException;
+import io.jsonwebtoken.JwtException;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -16,11 +21,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -56,6 +56,21 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
         Map<String, Object> body = getBodyMassage(List.of("Invalid username or password"),
+                HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<Object> handleJwtException(JwtException ex) {
+        Map<String, Object> body = getBodyMassage(
+                List.of(ex.getMessage()), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex) {
+        Map<String, Object> body = getBodyMassage(
+                List.of(ex.getMessage() + "The JWT token have invalid format"),
                 HttpStatus.UNAUTHORIZED);
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }

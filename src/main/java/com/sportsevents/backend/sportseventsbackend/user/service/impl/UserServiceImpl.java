@@ -1,6 +1,6 @@
 package com.sportsevents.backend.sportseventsbackend.user.service.impl;
 
-import com.sportsevents.backend.sportseventsbackend.shopping_cart.service.ShoppingCartService;
+import com.sportsevents.backend.sportseventsbackend.cart.service.ShoppingCartService;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserDto;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserRegistrationRequestDto;
 import com.sportsevents.backend.sportseventsbackend.user.exception.RegistrationException;

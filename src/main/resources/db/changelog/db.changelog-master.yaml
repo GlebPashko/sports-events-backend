@@ -14,4 +14,12 @@ databaseChangeLog:
   - include:
       file: db/changelog/changes/07-create-events-categories-table.yml
   - include:
+      file: db/changelog/changes/08-create-shopping-carts-table.yml
+  - include:
+      file: db/changelog/changes/09-create-cart-items-table.yml
+  - include:
+      file: db/changelog/changes/10-create-orders-table.yml
+  - include:
+      file: db/changelog/changes/11-create-oder-items-table.yml
+  - include:
       file: db/changelog/changes/91-insert-categories.yml

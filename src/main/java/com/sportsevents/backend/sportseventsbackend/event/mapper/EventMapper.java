@@ -8,6 +8,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 
 @Mapper(config = MapperConfig.class, uses = CategoryMapper.class)
 public interface EventMapper {
@@ -20,4 +21,11 @@ public interface EventMapper {
     List<EventDto> toDtoList(List<Event> events);
 
     void updateEventFromDto(CreateEventRequestDto requestDto, @MappingTarget Event event);
+
+    @Named("eventFromId")
+    default Event eventFromId(Long id) {
+        Event event = new Event();
+        event.setId(id);
+        return event;
+    }
 }

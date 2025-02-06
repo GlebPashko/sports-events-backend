@@ -1,5 +1,6 @@
 package com.sportsevents.backend.sportseventsbackend.user.service.impl;
 
+import com.sportsevents.backend.sportseventsbackend.cart.service.ShoppingCartService;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserDto;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserRegistrationRequestDto;
 import com.sportsevents.backend.sportseventsbackend.user.exception.RegistrationException;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final ShoppingCartService shoppingCartService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -33,6 +35,8 @@ public class UserServiceImpl implements UserService {
         Role role = roleRepository.findByRole(Role.RoleName.ROLE_USER);
         user.setRoles(Set.of(role));
         userRepository.save(user);
+
+        shoppingCartService.addShoppingCartToUser(user);
 
         return userMapper.toDto(user);
     }

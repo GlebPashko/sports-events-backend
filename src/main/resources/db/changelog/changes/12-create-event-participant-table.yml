@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-event-participants-table
+      author: hlieb
+      changes:
+        - createTable:
+            tableName: event_participants
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_event_participants_user
+                    referencedTableName: users
+                    referencedColumnNames: id
+
+              - column:
+                  name: event_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_event_participants_event
+                    referencedTableName: events
+                    referencedColumnNames: id
+
+              - column:
+                  name: order_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_event_participants_order
+                    referencedTableName: orders
+                    referencedColumnNames: id
+
+              - column:
+                  name: registered_at
+                  type: timestamp
+                  constraints:
+                    nullable: false

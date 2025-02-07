@@ -11,4 +11,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>,
         JpaSpecificationExecutor<Order> {
     @EntityGraph(attributePaths = {"orderItems", "orderItems.event"})
     Page<Order> findByUserId(Long id, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"orderItems", "orderItems.event"})
+    Page<Order> findById(Long id, Pageable pageable);
 }

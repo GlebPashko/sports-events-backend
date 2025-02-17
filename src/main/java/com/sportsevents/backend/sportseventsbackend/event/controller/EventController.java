@@ -8,6 +8,7 @@ import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,13 @@ public class EventController {
     @GetMapping
     public EventPageableDto findAllEvents(Pageable pageable) {
         return eventService.findAllEvents(pageable);
+    }
+
+    @Operation(summary = "Find all events")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/latest")
+    public List<EventDto> findLatestEvents() {
+        return eventService.findLatestEvents();
     }
 
     @Operation(summary = "Search for event by parameters")

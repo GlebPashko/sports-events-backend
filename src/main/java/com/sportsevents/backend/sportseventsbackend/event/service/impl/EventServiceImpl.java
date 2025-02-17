@@ -13,8 +13,10 @@ import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
@@ -53,6 +55,13 @@ public class EventServiceImpl implements EventService {
         Page<Event> page = eventRepository.findAll(pageable);
 
         return createPageableDto(page);
+    }
+
+    @Override
+    public List<EventDto> findLatestEvents() {
+        Pageable pageable = PageRequest.of(0, 4);
+
+        return eventMapper.toDtoList(eventRepository.findAllByOrderByCreatedAtDesc(pageable));
     }
 
     public EventPageableDto searchEvents(EventSearchParameters searchParameters,

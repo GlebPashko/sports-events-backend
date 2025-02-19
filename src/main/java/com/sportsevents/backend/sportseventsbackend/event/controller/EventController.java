@@ -31,7 +31,7 @@ public class EventController {
     private final EventService eventService;
 
     @Operation(summary = "Create a new event")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public EventDto createEvent(@RequestBody @Valid CreateEventRequestDto requestDto) {
         return eventService.saveEvent(requestDto);
@@ -67,7 +67,7 @@ public class EventController {
     }
 
     @Operation(summary = "Update a event by id")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public void updateEventById(@PathVariable Long id,
                                 @RequestBody @Valid CreateEventRequestDto requestDto) {
@@ -77,7 +77,7 @@ public class EventController {
     @Operation(summary = "Delete a event by id", description = "Mark the event "
             + "field 'is_deleted' = true")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteEventById(@PathVariable Long id) {
         eventService.deleteEventById(id);

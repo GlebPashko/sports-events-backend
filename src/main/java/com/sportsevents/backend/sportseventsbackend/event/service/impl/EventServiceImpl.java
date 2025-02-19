@@ -10,6 +10,7 @@ import com.sportsevents.backend.sportseventsbackend.event.repository.category.Ca
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventRepository;
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventSpecificationBuilder;
 import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
+import com.sportsevents.backend.sportseventsbackend.user.model.Role;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -117,7 +118,11 @@ public class EventServiceImpl implements EventService {
                         "Event with id: " + id + " not found"));
 
         User currentUser = getAuthenticatedUser();
-        if (!event.getAuthor().getId().equals(currentUser.getId())) {
+        if (currentUser.getRoles().stream()
+                .map(role -> role.getRole())
+                .anyMatch(roleName -> roleName.equals(Role.RoleName.ROLE_ADMIN))) {
+            eventRepository.deleteById(event.getId());
+        } else if (!event.getAuthor().getId().equals(currentUser.getId())) {
             throw new AccessDeniedException("You are not the author of this event.");
         }
 

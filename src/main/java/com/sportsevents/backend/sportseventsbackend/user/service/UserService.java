@@ -6,4 +6,8 @@ import com.sportsevents.backend.sportseventsbackend.user.exception.RegistrationE
 
 public interface UserService {
     UserDto register(UserRegistrationRequestDto userDto) throws RegistrationException;
+
+    UserDto getUser();
+
+    UserDto getUserById(Long id);
 }

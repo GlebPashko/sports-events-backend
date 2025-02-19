@@ -25,5 +25,4 @@ public class PaymentController {
     public PaymentDto payForOrder(@RequestBody PaymentRequestDto requestDto) {
         return paymentService.payForOrder(requestDto);
     }
-
 }

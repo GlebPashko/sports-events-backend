@@ -46,3 +46,9 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     nullable: false
+
+              - column:
+                  name: quantity
+                  type: int
+                  constraints:
+                    nullable: false

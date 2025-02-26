@@ -4,7 +4,7 @@ import com.liqpay.LiqPay;
 import com.sportsevents.backend.sportseventsbackend.cart.model.Order;
 import com.sportsevents.backend.sportseventsbackend.cart.repository.order.OrderRepository;
 import com.sportsevents.backend.sportseventsbackend.event.model.EventParticipant;
-import com.sportsevents.backend.sportseventsbackend.event.repository.eventparticipant.EventParticipantRepository;
+import com.sportsevents.backend.sportseventsbackend.event.repository.eventparticipant.ParticipantRepository;
 import com.sportsevents.backend.sportseventsbackend.payment.dto.PaymentDto;
 import com.sportsevents.backend.sportseventsbackend.payment.dto.PaymentRequestDto;
 import com.sportsevents.backend.sportseventsbackend.payment.mapper.PaymentMapper;
@@ -27,7 +27,7 @@ public class PaymentServiceImpl implements PaymentService { // LiqPay
 
     private final OrderRepository orderRepository;
     private final PaymentRepository paymentRepository;
-    private final EventParticipantRepository eventParticipantRepository;
+    private final ParticipantRepository participantRepository;
     private final PaymentMapper paymentMapper;
 
     @Override
@@ -60,12 +60,15 @@ public class PaymentServiceImpl implements PaymentService { // LiqPay
         payment.setOrder(order);
         paymentRepository.save(payment);
 
-        EventParticipant eventParticipant = new EventParticipant();
-        eventParticipant.setEvent(order.getOrderItems()
-                .stream().findFirst().get().getEvent()); // TODO: need no improve logic in future
-        eventParticipant.setUser(order.getUser());
-        eventParticipant.setOrder(order);
-        eventParticipantRepository.save(eventParticipant);
+        order.getOrderItems().forEach(orderItem -> {
+            EventParticipant eventParticipant = new EventParticipant();
+            eventParticipant.setEvent(orderItem.getEvent());
+            eventParticipant.setUser(order.getUser());
+            eventParticipant.setOrder(order);
+            eventParticipant.setQuantity(orderItem.getQuantity());
+            participantRepository.save(eventParticipant);
+        });
+
         return paymentDto;
     }
 }

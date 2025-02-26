@@ -83,13 +83,4 @@ public class CategoryController {
                                                     Pageable pageable) {
         return eventService.searchByCategoryId(id, searchParameters, pageable);
     }
-
-//    @Operation(summary = "Find all events by category id, author id and parameters")
-//    @PreAuthorize("hasRole('ROLE_USER')")
-//    @GetMapping("/{id}/events/search")
-//    public EventPageableDto searchBooksByCategoryAndAuthorId(@PathVariable Long id,
-//                                                    EventSearchParameters searchParameters,
-//                                                    Pageable pageable) {
-//        return eventService.searchByCategoryId(id, searchParameters, pageable);
-//    }
 }

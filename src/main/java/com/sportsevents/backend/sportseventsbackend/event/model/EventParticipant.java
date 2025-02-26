@@ -39,6 +39,9 @@ public class EventParticipant { // TODO: need to add the quantity field
     @Column(nullable = false, updatable = false)
     private LocalDateTime registeredAt;
 
+    @Column(nullable = false)
+    private int quantity;
+
     @PrePersist
     protected void onCreate() {
         registeredAt = LocalDateTime.now();

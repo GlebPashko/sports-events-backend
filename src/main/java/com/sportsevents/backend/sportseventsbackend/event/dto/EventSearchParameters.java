@@ -12,5 +12,6 @@ public record EventSearchParameters(
         BigDecimal minParticipants,
         BigDecimal maxParticipants,
         String city,
+        Long author,
         Boolean onlyAvailable
 ) {}

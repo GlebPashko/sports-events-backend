@@ -19,6 +19,7 @@ public class EventSpecificationBuilder implements SpecificationBuilder<Event> {
     private static final String MIN_PARTICIPANTS_FIELD = "minParticipants";
     private static final String MAX_PARTICIPANTS_FIELD = "maxParticipants";
     private static final String CITY_FIELD = "city";
+    private static final String AUTHOR_FIELD = "author";
     private static final String ONLY_AVAILABLE_FIELD = "onlyAvailable";
 
     private final SpecificationProviderManager<Event> specificationProviderManager;
@@ -73,6 +74,12 @@ public class EventSpecificationBuilder implements SpecificationBuilder<Event> {
             spec = spec.and(specificationProviderManager
                     .getSpecificationProvider(CITY_FIELD)
                     .getSpecification(new String[]{searchParameters.city().toString()}));
+        }
+
+        if (searchParameters.author() != null && searchParameters.author() > 0) {
+            spec = spec.and(specificationProviderManager
+                    .getSpecificationProvider(AUTHOR_FIELD)
+                    .getSpecification(new String[]{searchParameters.author().toString()}));
         }
 
         if (searchParameters.onlyAvailable() != null) {

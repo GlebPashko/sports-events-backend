@@ -10,11 +10,14 @@ import com.sportsevents.backend.sportseventsbackend.event.repository.category.Ca
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventRepository;
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventSpecificationBuilder;
 import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
+import com.sportsevents.backend.sportseventsbackend.user.model.Role;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
@@ -53,6 +56,13 @@ public class EventServiceImpl implements EventService {
         Page<Event> page = eventRepository.findAll(pageable);
 
         return createPageableDto(page);
+    }
+
+    @Override
+    public List<EventDto> findLatestEvents() {
+        Pageable pageable = PageRequest.of(0, 4);
+
+        return eventMapper.toDtoList(eventRepository.findAllByOrderByCreatedAtDesc(pageable));
     }
 
     public EventPageableDto searchEvents(EventSearchParameters searchParameters,
@@ -108,7 +118,11 @@ public class EventServiceImpl implements EventService {
                         "Event with id: " + id + " not found"));
 
         User currentUser = getAuthenticatedUser();
-        if (!event.getAuthor().getId().equals(currentUser.getId())) {
+        if (currentUser.getRoles().stream()
+                .map(role -> role.getRole())
+                .anyMatch(roleName -> roleName.equals(Role.RoleName.ROLE_ADMIN))) {
+            eventRepository.deleteById(event.getId());
+        } else if (!event.getAuthor().getId().equals(currentUser.getId())) {
             throw new AccessDeniedException("You are not the author of this event.");
         }
 

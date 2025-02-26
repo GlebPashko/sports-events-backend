@@ -13,7 +13,7 @@ import com.sportsevents.backend.sportseventsbackend.cart.repository.order.OrderR
 import com.sportsevents.backend.sportseventsbackend.cart.repository.orderitem.OrderItemRepository;
 import com.sportsevents.backend.sportseventsbackend.cart.repository.shoppingcart.ShoppingCartRepository;
 import com.sportsevents.backend.sportseventsbackend.cart.service.OrderService;
-import com.sportsevents.backend.sportseventsbackend.event.repository.eventparticipant.EventParticipantRepository;
+import com.sportsevents.backend.sportseventsbackend.event.repository.eventparticipant.ParticipantRepository;
 import com.sportsevents.backend.sportseventsbackend.payment.service.PaymentService;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemRepository orderItemRepository;
     private final ShoppingCartRepository shoppingCartRepository;
     private final UserRepository userRepository;
-    private final EventParticipantRepository eventParticipantRepository;
+    private final ParticipantRepository participantRepository;
     private final OrderMapper orderMapper;
     private final OrderItemMapper orderItemMapper;
 

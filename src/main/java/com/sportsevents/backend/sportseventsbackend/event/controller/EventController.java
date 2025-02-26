@@ -8,6 +8,7 @@ import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class EventController {
     private final EventService eventService;
 
     @Operation(summary = "Create a new event")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public EventDto createEvent(@RequestBody @Valid CreateEventRequestDto requestDto) {
         return eventService.saveEvent(requestDto);
@@ -50,6 +51,13 @@ public class EventController {
         return eventService.findAllEvents(pageable);
     }
 
+    @Operation(summary = "Find all events")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/latest")
+    public List<EventDto> findLatestEvents() {
+        return eventService.findLatestEvents();
+    }
+
     @Operation(summary = "Search for event by parameters")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/search")
@@ -59,7 +67,7 @@ public class EventController {
     }
 
     @Operation(summary = "Update a event by id")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public void updateEventById(@PathVariable Long id,
                                 @RequestBody @Valid CreateEventRequestDto requestDto) {
@@ -69,7 +77,7 @@ public class EventController {
     @Operation(summary = "Delete a event by id", description = "Mark the event "
             + "field 'is_deleted' = true")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteEventById(@PathVariable Long id) {
         eventService.deleteEventById(id);

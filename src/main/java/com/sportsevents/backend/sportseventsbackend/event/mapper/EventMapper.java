@@ -9,6 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
+import org.springframework.data.domain.Page;
 
 @Mapper(config = MapperConfig.class, uses = CategoryMapper.class)
 public interface EventMapper {
@@ -19,6 +20,9 @@ public interface EventMapper {
     EventDto toDto(Event event);
 
     List<EventDto> toDtoList(List<Event> events);
+
+    List<EventDto> toDtoList(Page<Event> events);
+
 
     void updateEventFromDto(CreateEventRequestDto requestDto, @MappingTarget Event event);
 

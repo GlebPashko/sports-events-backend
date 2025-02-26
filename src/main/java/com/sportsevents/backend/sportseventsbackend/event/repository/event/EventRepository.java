@@ -14,6 +14,9 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     Page<Event> findAll(Pageable pageable);
 
     @EntityGraph(attributePaths = "author")
+    Page<Event> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+    @EntityGraph(attributePaths = "author")
     Page<Event> findAll(Specification<Event> specification, Pageable pageable);
 
     @Query("SELECT e from Event e JOIN e.categories ec where ec.id = :categoryId")

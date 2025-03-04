@@ -19,6 +19,7 @@ public class EventDto {
     private BigDecimal price;
     private LocalDateTime createdAt;
     private String city;
+    private String google_map_coordinates;
     private Long authorId;
     private LocalDateTime registrationAvailableUntil;
     private Set<Long> categoryIds;

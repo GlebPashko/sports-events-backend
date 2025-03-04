@@ -42,7 +42,7 @@ public class Order {
     @Column(nullable = false)
     private String shippingAddress;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order")
     private Set<OrderItem> orderItems;
 
     public enum Status {

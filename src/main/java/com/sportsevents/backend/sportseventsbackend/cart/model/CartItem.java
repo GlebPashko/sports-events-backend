@@ -1,6 +1,7 @@
 package com.sportsevents.backend.sportseventsbackend.cart.model;
 
 import com.sportsevents.backend.sportseventsbackend.event.model.Event;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -24,7 +25,7 @@ public class CartItem {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "shopping_cart_id", nullable = false)
     private ShoppingCart shoppingCart;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
     @Column(nullable = false)

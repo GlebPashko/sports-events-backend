@@ -53,6 +53,8 @@ public class Event {
     private LocalDateTime createdAt;
     @Column(nullable = false, updatable = false)
     private String city;
+    @Column(nullable = false, updatable = false)
+    private String google_map_coordinates;
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)

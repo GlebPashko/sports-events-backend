@@ -38,14 +38,12 @@ public class CategoryController {
     }
 
     @Operation(summary = "Find all categories")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public List<CategoryDto> getAll() {
         return categoryService.findAll();
     }
 
     @Operation(summary = "Find a category by id")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public CategoryDto getCategoryById(@PathVariable Long id) {
         return categoryService.getById(id);
@@ -68,7 +66,6 @@ public class CategoryController {
     }
 
     @Operation(summary = "Find all evenst by category id")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}/events")
     public EventPageableDto getBooksByCategoryId(@PathVariable Long id,
                                                  Pageable pageable) {
@@ -76,7 +73,6 @@ public class CategoryController {
     }
 
     @Operation(summary = "Find all events by category id and parameters")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}/events/search")
     public EventPageableDto searchBooksByCategoryId(@PathVariable Long id,
                                                     EventSearchParameters searchParameters,

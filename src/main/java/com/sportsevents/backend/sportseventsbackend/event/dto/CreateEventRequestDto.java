@@ -33,6 +33,8 @@ public class CreateEventRequestDto {
     private BigDecimal price;
     @NotBlank
     private String city;
+    @NotBlank
+    private String google_map_coordinates;
     @Future
     @NotNull
     private LocalDateTime registrationAvailableUntil;

@@ -31,43 +31,39 @@ public class EventController {
     private final EventService eventService;
 
     @Operation(summary = "Create a new event")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ORGANIZER')")
     @PostMapping
     public EventDto createEvent(@RequestBody @Valid CreateEventRequestDto requestDto) {
         return eventService.saveEvent(requestDto);
     }
 
     @Operation(summary = "Find event by id")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public EventDto findEventById(@PathVariable Long id) {
         return eventService.findEventById(id);
     }
 
     @Operation(summary = "Find all events")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public EventPageableDto findAllEvents(Pageable pageable) {
         return eventService.findAllEvents(pageable);
     }
 
     @Operation(summary = "Find all events")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/latest")
     public List<EventDto> findLatestEvents() {
         return eventService.findLatestEvents();
     }
 
     @Operation(summary = "Search for event by parameters")
-    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/search")
-    public EventPageableDto searchBooks(EventSearchParameters searchParameters,
-                                        Pageable pageable) {
+    public EventPageableDto searchEvents(EventSearchParameters searchParameters,
+                                         Pageable pageable) {
         return eventService.searchEvents(searchParameters, pageable);
     }
 
     @Operation(summary = "Update a event by id")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ORGANIZER')")
     @PutMapping("/{id}")
     public void updateEventById(@PathVariable Long id,
                                 @RequestBody @Valid CreateEventRequestDto requestDto) {
@@ -77,7 +73,7 @@ public class EventController {
     @Operation(summary = "Delete a event by id", description = "Mark the event "
             + "field 'is_deleted' = true")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ORGANIZER')")
     @DeleteMapping("/{id}")
     public void deleteEventById(@PathVariable Long id) {
         eventService.deleteEventById(id);

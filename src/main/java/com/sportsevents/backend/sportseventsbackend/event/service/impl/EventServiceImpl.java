@@ -1,5 +1,8 @@
 package com.sportsevents.backend.sportseventsbackend.event.service.impl;
 
+import com.sportsevents.backend.sportseventsbackend.cart.repository.cartitem.CartItemRepository;
+import com.sportsevents.backend.sportseventsbackend.cart.repository.order.OrderRepository;
+import com.sportsevents.backend.sportseventsbackend.cart.repository.orderitem.OrderItemRepository;
 import com.sportsevents.backend.sportseventsbackend.event.dto.CreateEventRequestDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventPageableDto;
@@ -14,6 +17,7 @@ import com.sportsevents.backend.sportseventsbackend.user.model.Role;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,7 +33,8 @@ import org.springframework.stereotype.Service;
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
-    private final CategoryRepository categoryRepository;
+    private final CartItemRepository cartItemRepository;
+    private final OrderItemRepository orderItemRepository;
     private final EventMapper eventMapper;
     private final EventSpecificationBuilder specificationBuilder;
 
@@ -47,7 +52,7 @@ public class EventServiceImpl implements EventService {
     public EventDto findEventById(Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
-                "Event with id: " + id + " not found"));
+                        "Event with id: " + id + " not found"));
         EventDto eventDto = eventMapper.toDto(event);
         return eventDto;
     }
@@ -112,6 +117,7 @@ public class EventServiceImpl implements EventService {
         eventRepository.save(event);
     }
 
+    @Transactional
     public void deleteEventById(Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -120,13 +126,14 @@ public class EventServiceImpl implements EventService {
         User currentUser = getAuthenticatedUser();
         if (currentUser.getRoles().stream()
                 .map(role -> role.getRole())
-                .anyMatch(roleName -> roleName.equals(Role.RoleName.ROLE_ADMIN))) {
+                .anyMatch(roleName -> roleName.equals(Role.RoleName.ROLE_ADMIN))
+                || event.getAuthor().getId().equals(currentUser.getId())) {
+            cartItemRepository.deleteByEvent(event);
+            orderItemRepository.deleteByEvent(event);
             eventRepository.deleteById(event.getId());
         } else if (!event.getAuthor().getId().equals(currentUser.getId())) {
             throw new AccessDeniedException("You are not the author of this event.");
         }
-
-        eventRepository.deleteById(event.getId());
     }
 
     private User getAuthenticatedUser() {

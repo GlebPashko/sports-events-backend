@@ -23,7 +23,6 @@ public interface EventMapper {
 
     List<EventDto> toDtoList(Page<Event> events);
 
-
     void updateEventFromDto(CreateEventRequestDto requestDto, @MappingTarget Event event);
 
     @Named("eventFromId")

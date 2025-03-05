@@ -1,7 +1,6 @@
 package com.sportsevents.backend.sportseventsbackend.event.service.impl;
 
 import com.sportsevents.backend.sportseventsbackend.cart.repository.cartitem.CartItemRepository;
-import com.sportsevents.backend.sportseventsbackend.cart.repository.order.OrderRepository;
 import com.sportsevents.backend.sportseventsbackend.cart.repository.orderitem.OrderItemRepository;
 import com.sportsevents.backend.sportseventsbackend.event.dto.CreateEventRequestDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventDto;
@@ -9,7 +8,6 @@ import com.sportsevents.backend.sportseventsbackend.event.dto.EventPageableDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventSearchParameters;
 import com.sportsevents.backend.sportseventsbackend.event.mapper.EventMapper;
 import com.sportsevents.backend.sportseventsbackend.event.model.Event;
-import com.sportsevents.backend.sportseventsbackend.event.repository.category.CategoryRepository;
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventRepository;
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventSpecificationBuilder;
 import com.sportsevents.backend.sportseventsbackend.event.service.EventService;

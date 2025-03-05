@@ -1,9 +1,5 @@
 package com.sportsevents.backend.sportseventsbackend.user.controller;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
-import com.sportsevents.backend.sportseventsbackend.payment.dto.PaymentDto;
-import com.sportsevents.backend.sportseventsbackend.payment.dto.PaymentRequestDto;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserDto;
 import com.sportsevents.backend.sportseventsbackend.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

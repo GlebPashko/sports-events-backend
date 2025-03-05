@@ -1,7 +1,6 @@
 package com.sportsevents.backend.sportseventsbackend.cart.model;
 
 import com.sportsevents.backend.sportseventsbackend.event.model.Event;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

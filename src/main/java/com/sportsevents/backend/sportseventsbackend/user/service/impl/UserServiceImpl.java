@@ -1,6 +1,7 @@
 package com.sportsevents.backend.sportseventsbackend.user.service.impl;
 
 import com.sportsevents.backend.sportseventsbackend.cart.service.ShoppingCartService;
+import com.sportsevents.backend.sportseventsbackend.user.dto.AddRoleToUserRequestDto;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserDto;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserRegistrationRequestDto;
 import com.sportsevents.backend.sportseventsbackend.user.exception.RegistrationException;
@@ -11,6 +12,7 @@ import com.sportsevents.backend.sportseventsbackend.user.repository.RoleReposito
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import com.sportsevents.backend.sportseventsbackend.user.service.UserService;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,6 +54,31 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow();
         return userMapper.toDto(user);
+    }
+
+    @Override
+    public void addRoleToUser(AddRoleToUserRequestDto requestDto) {
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(
+                () -> new RuntimeException("User not found")
+        );
+
+        try {
+            Role.RoleName roleName = Role.RoleName.valueOf(requestDto.getRole());
+
+            if (user.getRoles().stream().anyMatch(role -> role.getRole().equals(roleName))) {
+                throw new RuntimeException("This user already has this role");
+            }
+
+            Role organizerRole = roleRepository.findByRole(roleName);
+            if (organizerRole == null) {
+                throw new RuntimeException("Role not found: " + requestDto.getRole());
+            }
+
+            user.getRoles().add(organizerRole);
+            userRepository.save(user);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid role: " + requestDto.getRole());
+        }
     }
 
     private User getAuthenticatedUser() {

@@ -12,31 +12,31 @@ import lombok.Data;
 
 @Data
 public class CreateEventRequestDto {
-    @NotBlank
+//    @NotBlank
     private String title;
-    @NotBlank
+//    @NotBlank
     private String descriptionSmall;
-    @NotBlank
+//    @NotBlank
     private String descriptionFull;
-    @NotBlank
+//    @NotBlank
     private String avatarImage;
-    @NotBlank
+//    @NotBlank
     private String mainImage;
-    @NotBlank
+//    @NotBlank
     private String videoLink;
-    @Positive
+//    @Positive
     private BigDecimal maximumParticipants;
-    @Future
-    @NotNull
+//    @Future
+//    @NotNull
     private LocalDateTime dateOfStartEvent;
-    @PositiveOrZero
+//    @PositiveOrZero
     private BigDecimal price;
-    @NotBlank
+//    @NotBlank
     private String city;
-    @NotBlank
+//    @NotBlank
     private String google_map_coordinates;
-    @Future
-    @NotNull
+//    @Future
+//    @NotNull
     private LocalDateTime registrationAvailableUntil;
     private Set<Long> categoryIds;
 }

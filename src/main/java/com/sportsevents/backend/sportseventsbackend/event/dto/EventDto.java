@@ -1,5 +1,6 @@
 package com.sportsevents.backend.sportseventsbackend.event.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;

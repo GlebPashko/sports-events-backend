@@ -135,8 +135,9 @@ public class EventServiceImpl implements EventService {
     }
 
     private User getAuthenticatedUser() {
-        String userEmail = SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal().toString();
+//        String userEmail = SecurityContextHolder.getContext()
+//                .getAuthentication().getPrincipal().toString();
+        String userEmail = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "User not found with email: " + userEmail));

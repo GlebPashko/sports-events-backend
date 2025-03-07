@@ -1,0 +1,2 @@
+DELETE FROM events;
+ALTER TABLE events AUTO_INCREMENT = 1;

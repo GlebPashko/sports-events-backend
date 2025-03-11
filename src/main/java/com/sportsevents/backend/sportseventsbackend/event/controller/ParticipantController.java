@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ParticipantController {
     private final ParticipantService participantService;
 
-    @Operation(summary = "Create a new event")
+    @Operation(summary = "Find all Participants by event id")
     @PreAuthorize("hasRole('ROLE_ORGANIZER')")
     @GetMapping("/event/{id}")
     public List<ParticipantDto> findAllParticipantsForEvent(@PathVariable Long id) {

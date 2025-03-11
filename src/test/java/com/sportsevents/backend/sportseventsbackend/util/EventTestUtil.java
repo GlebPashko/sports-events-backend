@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class TestUtil {
+public class EventTestUtil {
     private static final Long CORRECT_ID = 1L;
 
     public static Event getEvent() {
@@ -57,7 +57,7 @@ public class TestUtil {
         eventDto.setCity("Odesa");
         eventDto.setGoogle_map_coordinates("0.0,0.0");
 
-        eventDto.setAuthorId(1L);
+        eventDto.setAuthorId(2L);
 
         eventDto.setRegistrationAvailableUntil(LocalDateTime.of(2026, 3, 1, 0, 0));
 

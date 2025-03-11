@@ -1,13 +1,14 @@
 package com.sportsevents.backend.sportseventsbackend.controller;
 
-import static com.sportsevents.backend.sportseventsbackend.util.TestUtil.getEventDto;
-import static com.sportsevents.backend.sportseventsbackend.util.TestUtil.getEventRequestDto;
+import static com.sportsevents.backend.sportseventsbackend.util.EventTestUtil.getEventDto;
+import static com.sportsevents.backend.sportseventsbackend.util.EventTestUtil.getEventRequestDto;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,9 +33,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@Sql(scripts = "classpath:database/add-organizer-to-users-table.sql",
+@Sql(scripts = "classpath:database/clear-full-db.sql",
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
-@Sql(scripts = "classpath:database/add-admin-to-users-table.sql",
+@Sql(scripts = "classpath:database/user/add-roles-to-roles-table.sql",
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:database/user/add-users-with-role-to-users-table.sql",
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @SqlMergeMode(SqlMergeMode.MergeMode.MERGE)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -83,11 +86,11 @@ public class EventControllerTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:database/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Verify findAll() method works with real DB")
     @Transactional
-    public void getAll_ValidData_ShouldReturnEventPageableDto() throws Exception {
+    public void findAll_ValidData_ShouldReturnEventPageableDto() throws Exception {
         mockMvc.perform(get("/events")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -98,8 +101,56 @@ public class EventControllerTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:database/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DisplayName("Verify searchEvents() method works with real DB")
+    @Transactional
+    @WithMockUser(username = "user@example.com", roles = "USER")
+    public void searchEvents_ValidData_ShouldReturnEventPageableDto() throws Exception {
+        mockMvc.perform(get("/events/search")
+                        .param("title", "Sample Event")
+                        .param("minPrice", "9")
+                        .param("maxPrice", "100")
+                        .param("startDate", "2024-03-10T10:00:00")
+                        .param("endDate", "2028-03-15T18:00:00")
+                        .param("city", "Odesa")
+                        .param("author", "2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.events.size()").value(1))
+                .andExpect(jsonPath("$.thisPage").value(0))
+                .andExpect(jsonPath("$.totalPages").value(1))
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DisplayName("Verify findAll() method works with real DB")
+    @Transactional
+    public void findLatest_ValidData_ShouldReturnEventDtos() throws Exception {
+        EventDto expected = getEventDto();
+
+        mockMvc.perform(get("/events/latest")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].price").value(expected.getPrice().doubleValue()))
+                .andExpect(jsonPath("$[0].title", is(expected.getTitle())))
+                .andExpect(jsonPath("$[0].avatarImage", is(expected.getAvatarImage())))
+                .andExpect(jsonPath("$[0].descriptionSmall", is(expected.getDescriptionSmall())))
+                .andExpect(jsonPath("$[0].descriptionFull", is(expected.getDescriptionFull())))
+                .andExpect(jsonPath("$[0].maximumParticipants").value(expected.getMaximumParticipants().doubleValue()))
+                .andExpect(jsonPath("$[0].dateOfStartEvent")
+                        .value(expected.getDateOfStartEvent().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))))
+                .andExpect(jsonPath("$[0].city", is(expected.getCity())))
+                .andExpect(jsonPath("$[0].google_map_coordinates", is(expected.getGoogle_map_coordinates())))
+                .andExpect(jsonPath("$[0].registrationAvailableUntil")
+                        .value(expected.getRegistrationAvailableUntil().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
+    }
+
+    @Test
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Verify findById() method works")
     @Transactional
     public void getEvenById_ValidData_ShouldReturnEventDto() throws Exception {
@@ -122,6 +173,39 @@ public class EventControllerTest {
     }
 
     @Test
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DisplayName("Verify findAll() method works with real DB")
+    @Transactional
+    @WithMockUser(username = "organizer@example.com", roles = "ORGANIZER")
+    public void updateEventById_ValidData_ShouldReturnOkStatus() throws Exception {
+        long eventId = CORRECT_ID;
+        String jsonRequest = objectMapper.writeValueAsString(getEventRequestDto());
+
+        mockMvc.perform(put("/events/" + eventId)
+                        .content(jsonRequest)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DisplayName("Verify findAll() method works with real DB")
+    @Transactional
+    @WithMockUser(username = "user@example.com", roles = "USER")
+    public void updateEventById_WithoutValidRole_ShouldReturnForbiddenStatus() throws Exception {
+        long eventId = CORRECT_ID;
+        String jsonRequest = objectMapper.writeValueAsString(getEventRequestDto());
+
+        mockMvc.perform(put("/events/" + eventId)
+                        .content(jsonRequest)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
     @DisplayName("Verify findById() method works when book by id not exists")
     @Transactional
     public void getEventById_NotValidId_ShouldReturnException() throws Exception {
@@ -134,8 +218,8 @@ public class EventControllerTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:database/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Verify deleteById() method works")
     @WithMockUser(username = "admin@example.com", roles = {"ADMIN", "ORGANIZER", "USER"})
     @Transactional

@@ -11,6 +11,7 @@ import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.RoleRepository;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import com.sportsevents.backend.sportseventsbackend.user.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
@@ -52,26 +53,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("User with id: " + id + " not found")
+        );
         return userMapper.toDto(user);
     }
 
     @Override
     public void addRoleToUser(AddRoleToUserRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(
-                () -> new RuntimeException("User not found")
+                () -> new EntityNotFoundException("User not found")
         );
 
         try {
             Role.RoleName roleName = Role.RoleName.valueOf(requestDto.getRole());
 
             if (user.getRoles().stream().anyMatch(role -> role.getRole().equals(roleName))) {
-                throw new RuntimeException("This user already has this role");
+                throw new EntityNotFoundException("This user already has this role");
             }
 
             Role organizerRole = roleRepository.findByRole(roleName);
             if (organizerRole == null) {
-                throw new RuntimeException("Role not found: " + requestDto.getRole());
+                throw new EntityNotFoundException("Role not found: " + requestDto.getRole());
             }
 
             user.getRoles().add(organizerRole);
@@ -82,8 +85,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private User getAuthenticatedUser() {
-        String userEmail = SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal().toString();
-        return userRepository.findByEmail(userEmail).orElseThrow();
+        String userEmail = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "User not found with email: " + userEmail));
     }
 }

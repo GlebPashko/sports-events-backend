@@ -107,8 +107,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private User getAuthenticatedUser() {
-        String userEmail = SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal().toString();
-        return userRepository.findByEmail(userEmail).orElseThrow();
+        String userEmail = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        return userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "User not found with email: " + userEmail));
     }
 }

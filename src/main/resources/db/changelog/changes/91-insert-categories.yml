@@ -8,10 +8,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "Fitness"
+                  value: "Фітнес"
               - column:
                   name: description
-                  value: "Events related to fitness training and workouts"
+                  value: "Події, пов’язані з тренуваннями та здоровим способом життя"
               - column:
                   name: is_deleted
                   value: "0"
@@ -20,10 +20,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "Yoga"
+                  value: "Йога"
               - column:
                   name: description
-                  value: "Yoga classes and meditation events"
+                  value: "Заняття з йоги, медитації та духовних практик"
               - column:
                   name: is_deleted
                   value: "0"
@@ -32,10 +32,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "Running"
+                  value: "Біг"
               - column:
                   name: description
-                  value: "Marathons, running clubs, and races"
+                  value: "Забіги, марафони та бігові клуби"
               - column:
                   name: is_deleted
                   value: "0"
@@ -44,10 +44,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "Cycling"
+                  value: "Велоспорт"
               - column:
                   name: description
-                  value: "Cycling meetups and competitions"
+                  value: "Зустрічі, велозаїзди та змагання з велоспорту"
               - column:
                   name: is_deleted
                   value: "0"
@@ -56,10 +56,10 @@ databaseChangeLog:
             columns:
               - column:
                   name: name
-                  value: "Swimming"
+                  value: "Плавання"
               - column:
                   name: description
-                  value: "Swimming and water-based activities"
+                  value: "Змагання та тренування з плавання, водні активності"
               - column:
                   name: is_deleted
                   value: "0"

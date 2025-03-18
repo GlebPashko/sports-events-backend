@@ -59,7 +59,7 @@ public class OrderControllerTest {
     @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "user@example.com", roles = "USER")
     @Transactional
-    public void createOrder_ValidData_ShouldReturnShoppingCartResponseDto() throws Exception {
+    public void createOrder_ValidData_ShouldReturnOrderDto() throws Exception {
         OrderResponseDto expected = getOrderResponseDto();
 
         String jsonRequest = objectMapper.writeValueAsString(getCreateOrderRequestDto());
@@ -76,13 +76,13 @@ public class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("Verify createOrder() method works")
+    @DisplayName("Verify getOrders() method works")
     @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/cart/add-shopping-cart-items.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "user@example.com", roles = "USER")
     @Transactional
-    public void getShoppingCart_ValidData_ShouldReturnShoppingCartResponseDto() throws Exception {
+    public void getOrders_ValidData_ShouldReturnOrderDto() throws Exception {
         String jsonRequest = objectMapper.writeValueAsString(getCreateOrderRequestDto());
 
         mockMvc.perform(get("/orders")

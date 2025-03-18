@@ -122,7 +122,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    @DisplayName("Verify findById() method works when book by id not exists")
+    @DisplayName("Verify findById() method returns an exception when category by id not exists")
     @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
@@ -156,9 +156,11 @@ public class CategoryControllerTest {
     }
 
     @Test
+    @DisplayName("Verify deleteCategory() method works")
     @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)    @DisplayName("Verify deleteCategory removes category for valid ID")
+    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "admin@example.com", roles = {"ADMIN", "ORGANIZER", "USER"})
+    @Transactional
     public void deleteCategory_WithValidId_ShouldDeleteCategory() throws Exception {
         Long categoryId = CORRECT_ID;
 
@@ -188,7 +190,7 @@ public class CategoryControllerTest {
     }
 
     @Test
-    @DisplayName("Verify getEventsByCategoryId() method works")
+    @DisplayName("Verify searchEventByCategoryId() method works")
     @Sql(scripts = "classpath:database/event/create-event-with-category.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional

@@ -17,12 +17,15 @@ import com.sportsevents.backend.sportseventsbackend.event.repository.eventpartic
 import com.sportsevents.backend.sportseventsbackend.payment.service.PaymentService;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
+import com.sportsevents.backend.sportseventsbackend.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,19 +34,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
-    private final PaymentService paymentService;
+    @Lazy
+    @Autowired
+    private UserService userService;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final ShoppingCartRepository shoppingCartRepository;
-    private final UserRepository userRepository;
-    private final ParticipantRepository participantRepository;
     private final OrderMapper orderMapper;
     private final OrderItemMapper orderItemMapper;
 
     @Override
     @Transactional
     public OrderResponseDto createOrder(CreateOrderRequestDto requestDto) {
-        User user = getAuthenticatedUser();
+        User user = userService.getAuthenticatedUser();
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(user.getId());
 
         Order order = new Order();
@@ -69,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Set<OrderResponseDto> getOrders(Pageable pageable) {
-        User user = getAuthenticatedUser();
+        User user = userService.getAuthenticatedUser();
         Page<Order> order = orderRepository.findByUserId(user.getId(), pageable);
         orderMapper.orderResponseDtoSet(order);
 
@@ -104,12 +107,5 @@ public class OrderServiceImpl implements OrderService {
         }
         orderItem.setOrder(order);
         orderItem.setPrice(orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity())));
-    }
-
-    private User getAuthenticatedUser() {
-        String userEmail = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        return userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "User not found with email: " + userEmail));
     }
 }

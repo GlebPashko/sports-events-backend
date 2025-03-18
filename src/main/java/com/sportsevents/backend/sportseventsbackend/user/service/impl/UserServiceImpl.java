@@ -84,8 +84,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private User getAuthenticatedUser() {
-        String userEmail = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+    public User getAuthenticatedUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String userEmail;
+        if (principal instanceof String) {
+            userEmail = principal.toString();
+        } else if (principal instanceof org.springframework.security.core.userdetails.User) {
+            userEmail = ((org.springframework.security.core.userdetails.User) principal).getUsername();
+        } else {
+            throw new IllegalStateException("Unexpected principal type: " + principal.getClass().getName());
+        }
+
         return userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "User not found with email: " + userEmail));

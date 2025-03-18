@@ -63,7 +63,7 @@ public class ShoppingCartControllerTest {
     }
 
     @Test
-    @DisplayName("Verify getShoppingCart() method works")
+    @DisplayName("Verify addEventToShoppingCart() method works")
     @WithMockUser(username = "user@example.com", roles = "USER")
     @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)

@@ -88,7 +88,7 @@ public class EventControllerTest {
     @Test
     @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @DisplayName("Verify findAll() method works with real DB")
+    @DisplayName("Verify findAll() method works")
     @Transactional
     public void findAll_ValidData_ShouldReturnEventPageableDto() throws Exception {
         mockMvc.perform(get("/events")
@@ -103,7 +103,7 @@ public class EventControllerTest {
     @Test
     @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @DisplayName("Verify searchEvents() method works with real DB")
+    @DisplayName("Verify searchEvents() method works")
     @Transactional
     @WithMockUser(username = "user@example.com", roles = "USER")
     public void searchEvents_ValidData_ShouldReturnEventPageableDto() throws Exception {
@@ -126,7 +126,7 @@ public class EventControllerTest {
     @Test
     @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @DisplayName("Verify findAll() method works with real DB")
+    @DisplayName("Verify findAllLatest()")
     @Transactional
     public void findLatest_ValidData_ShouldReturnEventDtos() throws Exception {
         EventDto expected = getEventDto();
@@ -175,7 +175,7 @@ public class EventControllerTest {
     @Test
     @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @DisplayName("Verify findAll() method works with real DB")
+    @DisplayName("Verify updateEventById() method works")
     @Transactional
     @WithMockUser(username = "organizer@example.com", roles = "ORGANIZER")
     public void updateEventById_ValidData_ShouldReturnOkStatus() throws Exception {
@@ -192,7 +192,7 @@ public class EventControllerTest {
     @Test
     @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @DisplayName("Verify findAll() method works with real DB")
+    @DisplayName("Make sure the updateEventById() method returns an exception if the user does not have the required role")
     @Transactional
     @WithMockUser(username = "user@example.com", roles = "USER")
     public void updateEventById_WithoutValidRole_ShouldReturnForbiddenStatus() throws Exception {
@@ -206,7 +206,7 @@ public class EventControllerTest {
     }
 
     @Test
-    @DisplayName("Verify findById() method works when book by id not exists")
+    @DisplayName("Verify findById() method returns an exception when book by id not exists")
     @Transactional
     public void getEventById_NotValidId_ShouldReturnException() throws Exception {
         long eventId = INCORRECT_ID;

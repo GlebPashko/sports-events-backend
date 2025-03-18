@@ -1,18 +1,15 @@
 package com.sportsevents.backend.sportseventsbackend.controller;
 
-import static com.sportsevents.backend.sportseventsbackend.util.ShoppingCartUtil.getCartItemRequestDto;
 import static com.sportsevents.backend.sportseventsbackend.util.UserUtil.getUserDto;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserDto;
-import com.sportsevents.backend.sportseventsbackend.util.UserUtil;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -54,7 +51,8 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Verify getUser() method works")
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "user@example.com", roles = "USER")
     @Transactional
     public void getUser_WithValidData_ShouldReturnUserDto() throws Exception {
@@ -72,7 +70,8 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Verify getUserById() method works")
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "user@example.com", roles = "USER")
     @Transactional
     public void getUserById_WithValidData_ShouldReturnUserDto() throws Exception {
@@ -90,14 +89,14 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("Verify getUserById() method works when id incorrect")
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "user@example.com", roles = "USER")
     @Transactional
     public void getUserById_WithoutValidData_ShouldReturnException() throws Exception {
         Long userId = INCORRECT_ID;
         UserDto expected = getUserDto();
         String errorMessage = "User with id: " + userId + " not found";
-
 
         mockMvc.perform(get("/user/{id}", userId)
                         .contentType(MediaType.APPLICATION_JSON))

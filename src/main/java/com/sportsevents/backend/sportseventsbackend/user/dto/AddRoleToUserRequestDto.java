@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class AddRoleToUserRequestDto {
     @NotNull
-    Long userId;
+    private Long userId;
     @NotBlank
-    String role;
+    private String role;
 }

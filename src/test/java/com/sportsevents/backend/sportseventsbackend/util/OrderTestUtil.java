@@ -8,9 +8,7 @@ import com.sportsevents.backend.sportseventsbackend.cart.dto.order.OrderResponse
 import com.sportsevents.backend.sportseventsbackend.cart.model.Order;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
 
 public class OrderTestUtil {
     public static CreateOrderRequestDto getCreateOrderRequestDto() {

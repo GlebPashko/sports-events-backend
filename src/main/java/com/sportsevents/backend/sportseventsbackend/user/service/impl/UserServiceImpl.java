@@ -13,7 +13,6 @@ import com.sportsevents.backend.sportseventsbackend.user.repository.UserReposito
 import com.sportsevents.backend.sportseventsbackend.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -91,9 +90,11 @@ public class UserServiceImpl implements UserService {
         if (principal instanceof String) {
             userEmail = principal.toString();
         } else if (principal instanceof org.springframework.security.core.userdetails.User) {
-            userEmail = ((org.springframework.security.core.userdetails.User) principal).getUsername();
+            userEmail = ((org.springframework.security.core.userdetails.User)
+                    principal).getUsername();
         } else {
-            throw new IllegalStateException("Unexpected principal type: " + principal.getClass().getName());
+            throw new IllegalStateException("Unexpected principal type: "
+                    + principal.getClass().getName());
         }
 
         return userRepository.findByEmail(userEmail)

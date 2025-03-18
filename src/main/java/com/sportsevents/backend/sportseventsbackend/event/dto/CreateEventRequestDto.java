@@ -34,7 +34,7 @@ public class CreateEventRequestDto {
     @NotBlank
     private String city;
     @NotBlank
-    private String google_map_coordinates;
+    private String googleMapCoordinates;
     @Future
     @NotNull
     private LocalDateTime registrationAvailableUntil;

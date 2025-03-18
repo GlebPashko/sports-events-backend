@@ -13,14 +13,12 @@ import com.sportsevents.backend.sportseventsbackend.cart.service.ShoppingCartSer
 import com.sportsevents.backend.sportseventsbackend.event.model.Event;
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventRepository;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
-import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import com.sportsevents.backend.sportseventsbackend.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -37,7 +35,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartResponseDto getShoppingCart() {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userService.getUser().getId());
+        ShoppingCart shoppingCart = shoppingCartRepository
+                .findByUserId(userService.getUser().getId());
 
         return shoppingCartMapper.toShoppingCartResponseDto(shoppingCart);
     }
@@ -48,7 +47,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Event event = eventRepository.findById(requestDto.getEventId())
                 .orElseThrow(() -> new EntityNotFoundException("Book with id "
                         + requestDto.getEventId() + " not found"));
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userService.getUser().getId());
+        ShoppingCart shoppingCart =
+                shoppingCartRepository.findByUserId(userService.getUser().getId());
 
         CartItem cartItem = cartItemRepository.findByShoppingCartId(shoppingCart.getId())
                 .stream()
@@ -73,7 +73,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCartResponseDto updateQuantity(
             Long id, UpdateShoppingCartRequestDto requestDto) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userService.getUser().getId());
+        ShoppingCart shoppingCart = shoppingCartRepository
+                .findByUserId(userService.getUser().getId());
 
         CartItem cartItem = cartItemRepository.findByIdAndShoppingCartId(id, shoppingCart.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Item not found"));
@@ -86,7 +87,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     @Transactional
     public void deleteBook(Long id) {
-        ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userService.getUser().getId());
+        ShoppingCart shoppingCart = shoppingCartRepository
+                .findByUserId(userService.getUser().getId());
         cartItemRepository.deleteByIdAndShoppingCartId(id, shoppingCart.getId());
     }
 

@@ -48,8 +48,10 @@ public class AuthenticationControllerTest {
 
     @Test
     @DisplayName("Verify register() method works")
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @Sql(scripts = "classpath:database/user/delete-users-from-users-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/user/delete-users-from-users-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
     public void registerUser_WithValidData_ShouldReturnUserDto() throws Exception {
         UserDto expected = getUserDto();
@@ -68,8 +70,10 @@ public class AuthenticationControllerTest {
 
     @Test
     @DisplayName("Verify register() method throws an exception if the data is incorrect")
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @Sql(scripts = "classpath:database/user/delete-users-from-users-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/user/delete-users-from-users-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
     public void registerUser_WithoutValidData_ShouldReturnException() throws Exception {
         String errorMessage = "Invalid email format";
@@ -87,9 +91,12 @@ public class AuthenticationControllerTest {
 
     @Test
     @DisplayName("Verify login() method works")
-    @Sql(scripts = "classpath:database/user/add-user-to-users-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @Sql(scripts = "classpath:database/user/delete-users-from-users-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/user/add-user-to-users-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/user/delete-users-from-users-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
     public void loginUser_WithValidData_ShouldReturnUserLoginResponseDto() throws Exception {
         String jsonRequest = objectMapper.writeValueAsString(getUserLoginRequestDto());
@@ -103,9 +110,12 @@ public class AuthenticationControllerTest {
 
     @Test
     @DisplayName("Verify login() method throws an exception if the data is incorrect")
-    @Sql(scripts = "classpath:database/user/add-user-to-users-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @Sql(scripts = "classpath:database/user/delete-users-from-users-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/user/add-user-to-users-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/user/delete-users-from-users-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
     public void loginUser_WithoutValidData_ShouldReturnException() throws Exception {
         String errorMessage = "Invalid username or password";

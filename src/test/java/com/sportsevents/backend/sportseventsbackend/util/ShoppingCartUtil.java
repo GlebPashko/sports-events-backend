@@ -4,7 +4,6 @@ import static com.sportsevents.backend.sportseventsbackend.util.EventTestUtil.ge
 
 import com.sportsevents.backend.sportseventsbackend.cart.dto.cartitem.CartItemRequestDto;
 import com.sportsevents.backend.sportseventsbackend.cart.dto.shoppingcart.UpdateShoppingCartRequestDto;
-import com.sportsevents.backend.sportseventsbackend.cart.model.ShoppingCart;
 
 public class ShoppingCartUtil {
     public static CartItemRequestDto getCartItemRequestDto() {
@@ -15,7 +14,8 @@ public class ShoppingCartUtil {
     }
 
     public static UpdateShoppingCartRequestDto getUpdateShoppingCartRequestDto() {
-        UpdateShoppingCartRequestDto updateShoppingCartRequestDto = new UpdateShoppingCartRequestDto();
+        UpdateShoppingCartRequestDto updateShoppingCartRequestDto
+                = new UpdateShoppingCartRequestDto();
         updateShoppingCartRequestDto.setQuantity(2);
         return updateShoppingCartRequestDto;
     }

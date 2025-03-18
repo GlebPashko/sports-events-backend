@@ -1,6 +1,5 @@
 package com.sportsevents.backend.sportseventsbackend.event.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -20,7 +19,7 @@ public class EventDto {
     private BigDecimal price;
     private LocalDateTime createdAt;
     private String city;
-    private String google_map_coordinates;
+    private String googleMapCoordinates;
     private Long authorId;
     private LocalDateTime registrationAvailableUntil;
     private Set<Long> categoryIds;

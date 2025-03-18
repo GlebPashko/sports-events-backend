@@ -67,16 +67,16 @@ public class CategoryController {
 
     @Operation(summary = "Find all evenst by category id")
     @GetMapping("/{id}/events")
-    public EventPageableDto getBooksByCategoryId(@PathVariable Long id,
-                                                 Pageable pageable) {
+    public EventPageableDto getEventsByCategoryId(@PathVariable Long id,
+                                                  Pageable pageable) {
         return eventService.findAllByCategoryId(id, pageable);
     }
 
     @Operation(summary = "Find all events by category id and parameters")
     @GetMapping("/{id}/events/search")
-    public EventPageableDto searchBooksByCategoryId(@PathVariable Long id,
-                                                    EventSearchParameters searchParameters,
-                                                    Pageable pageable) {
+    public EventPageableDto searchEventsByCategoryId(@PathVariable Long id,
+                                                     EventSearchParameters searchParameters,
+                                                     Pageable pageable) {
         return eventService.searchByCategoryId(id, searchParameters, pageable);
     }
 }

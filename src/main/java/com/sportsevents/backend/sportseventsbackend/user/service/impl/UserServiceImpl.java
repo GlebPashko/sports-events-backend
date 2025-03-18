@@ -1,6 +1,7 @@
 package com.sportsevents.backend.sportseventsbackend.user.service.impl;
 
 import com.sportsevents.backend.sportseventsbackend.cart.service.ShoppingCartService;
+import com.sportsevents.backend.sportseventsbackend.user.dto.AddRoleToUserRequestDto;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserDto;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserRegistrationRequestDto;
 import com.sportsevents.backend.sportseventsbackend.user.exception.RegistrationException;
@@ -10,7 +11,9 @@ import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.RoleRepository;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import com.sportsevents.backend.sportseventsbackend.user.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,13 +53,51 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("User with id: " + id + " not found")
+        );
         return userMapper.toDto(user);
     }
 
-    private User getAuthenticatedUser() {
-        String userEmail = SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal().toString();
-        return userRepository.findByEmail(userEmail).orElseThrow();
+    @Override
+    public void addRoleToUser(AddRoleToUserRequestDto requestDto) {
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(
+                () -> new EntityNotFoundException("User not found")
+        );
+
+        try {
+            Role.RoleName roleName = Role.RoleName.valueOf(requestDto.getRole());
+
+            if (user.getRoles().stream().anyMatch(role -> role.getRole().equals(roleName))) {
+                throw new EntityNotFoundException("This user already has this role");
+            }
+
+            Role organizerRole = roleRepository.findByRole(roleName);
+            if (organizerRole == null) {
+                throw new EntityNotFoundException("Role not found: " + requestDto.getRole());
+            }
+
+            user.getRoles().add(organizerRole);
+            userRepository.save(user);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid role: " + requestDto.getRole());
+        }
+    }
+
+    public User getAuthenticatedUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String userEmail;
+        if (principal instanceof String) {
+            userEmail = principal.toString();
+        } else if (principal instanceof org.springframework.security.core.userdetails.User) {
+            userEmail = ((org.springframework.security.core.userdetails.User) principal).getUsername();
+        } else {
+            throw new IllegalStateException("Unexpected principal type: " + principal.getClass().getName());
+        }
+
+        return userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "User not found with email: " + userEmail));
     }
 }

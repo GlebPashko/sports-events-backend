@@ -5,7 +5,6 @@ import com.sportsevents.backend.sportseventsbackend.event.mapper.ParticipantMapp
 import com.sportsevents.backend.sportseventsbackend.event.model.EventParticipant;
 import com.sportsevents.backend.sportseventsbackend.event.repository.eventparticipant.ParticipantRepository;
 import com.sportsevents.backend.sportseventsbackend.event.service.ParticipantService;
-import com.sportsevents.backend.sportseventsbackend.user.dto.UserDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

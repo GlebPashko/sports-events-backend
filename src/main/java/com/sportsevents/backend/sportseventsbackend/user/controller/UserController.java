@@ -1,13 +1,11 @@
 package com.sportsevents.backend.sportseventsbackend.user.controller;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
-import com.sportsevents.backend.sportseventsbackend.payment.dto.PaymentDto;
-import com.sportsevents.backend.sportseventsbackend.payment.dto.PaymentRequestDto;
+import com.sportsevents.backend.sportseventsbackend.user.dto.AddRoleToUserRequestDto;
 import com.sportsevents.backend.sportseventsbackend.user.dto.UserDto;
 import com.sportsevents.backend.sportseventsbackend.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,5 +34,12 @@ public class UserController {
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
+    }
+
+    @Operation(summary = "Add a role to a user")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("add-role")
+    public void addRoleToUser(@RequestBody @Valid AddRoleToUserRequestDto requestDto) {
+        userService.addRoleToUser(requestDto);
     }
 }

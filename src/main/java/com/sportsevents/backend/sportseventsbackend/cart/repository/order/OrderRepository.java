@@ -1,7 +1,6 @@
 package com.sportsevents.backend.sportseventsbackend.cart.repository.order;
 
 import com.sportsevents.backend.sportseventsbackend.cart.model.Order;
-import com.sportsevents.backend.sportseventsbackend.event.model.Event;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;

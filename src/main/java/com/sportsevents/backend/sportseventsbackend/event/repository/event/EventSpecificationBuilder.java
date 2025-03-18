@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+@SuppressWarnings("OverlyComplexMethod")
 @Component
 @RequiredArgsConstructor
 public class EventSpecificationBuilder implements SpecificationBuilder<Event> {
@@ -24,6 +25,7 @@ public class EventSpecificationBuilder implements SpecificationBuilder<Event> {
 
     private final SpecificationProviderManager<Event> specificationProviderManager;
 
+    @SuppressWarnings("OverlyComplexMethod")
     @Override
     public Specification<Event> build(EventSearchParameters searchParameters) {
         Specification<Event> spec = Specification.where(null);

@@ -1,7 +1,6 @@
 package com.sportsevents.backend.sportseventsbackend.event.service.impl;
 
 import com.sportsevents.backend.sportseventsbackend.cart.repository.cartitem.CartItemRepository;
-import com.sportsevents.backend.sportseventsbackend.cart.repository.order.OrderRepository;
 import com.sportsevents.backend.sportseventsbackend.cart.repository.orderitem.OrderItemRepository;
 import com.sportsevents.backend.sportseventsbackend.event.dto.CreateEventRequestDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventDto;
@@ -9,13 +8,13 @@ import com.sportsevents.backend.sportseventsbackend.event.dto.EventPageableDto;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventSearchParameters;
 import com.sportsevents.backend.sportseventsbackend.event.mapper.EventMapper;
 import com.sportsevents.backend.sportseventsbackend.event.model.Event;
-import com.sportsevents.backend.sportseventsbackend.event.repository.category.CategoryRepository;
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventRepository;
 import com.sportsevents.backend.sportseventsbackend.event.repository.event.EventSpecificationBuilder;
 import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
 import com.sportsevents.backend.sportseventsbackend.user.model.Role;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
 import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
+import com.sportsevents.backend.sportseventsbackend.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -31,15 +30,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class EventServiceImpl implements EventService {
+    private final UserService userService;
     private final EventRepository eventRepository;
-    private final UserRepository userRepository;
     private final CartItemRepository cartItemRepository;
     private final OrderItemRepository orderItemRepository;
     private final EventMapper eventMapper;
     private final EventSpecificationBuilder specificationBuilder;
 
     public EventDto saveEvent(CreateEventRequestDto requestDto) {
-        User user = getAuthenticatedUser();
+        User user = userService.getAuthenticatedUser();
 
         Event event = eventMapper.toModel(requestDto);
         event.setAuthor(user);
@@ -108,7 +107,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Event with id: " + id + " not found"));
 
-        User currentUser = getAuthenticatedUser();
+        User currentUser = userService.getAuthenticatedUser();
         if (!event.getAuthor().getId().equals(currentUser.getId())) {
             throw new AccessDeniedException("You are not the author of this event.");
         }
@@ -123,7 +122,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Event with id: " + id + " not found"));
 
-        User currentUser = getAuthenticatedUser();
+        User currentUser = userService.getAuthenticatedUser();
         if (currentUser.getRoles().stream()
                 .map(role -> role.getRole())
                 .anyMatch(roleName -> roleName.equals(Role.RoleName.ROLE_ADMIN))
@@ -134,14 +133,6 @@ public class EventServiceImpl implements EventService {
         } else if (!event.getAuthor().getId().equals(currentUser.getId())) {
             throw new AccessDeniedException("You are not the author of this event.");
         }
-    }
-
-    private User getAuthenticatedUser() {
-        String userEmail = SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal().toString();
-        return userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "User not found with email: " + userEmail));
     }
 
     private EventPageableDto createPageableDto(Page page) {

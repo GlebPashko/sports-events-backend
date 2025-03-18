@@ -78,16 +78,24 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$.avatarImage", is(expected.getAvatarImage())))
                 .andExpect(jsonPath("$.descriptionSmall", is(expected.getDescriptionSmall())))
                 .andExpect(jsonPath("$.descriptionFull", is(expected.getDescriptionFull())))
-                .andExpect(jsonPath("$.maximumParticipants").value(expected.getMaximumParticipants()))
-                .andExpect(jsonPath("$.dateOfStartEvent").value(expected.getDateOfStartEvent().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))))
+                .andExpect(jsonPath("$.maximumParticipants")
+                        .value(expected.getMaximumParticipants()))
+                .andExpect(jsonPath("$.dateOfStartEvent")
+                        .value(expected.getDateOfStartEvent()
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))))
                 .andExpect(jsonPath("$.city", is(expected.getCity())))
-                .andExpect(jsonPath("$.google_map_coordinates", is(expected.getGoogle_map_coordinates())))
-                .andExpect(jsonPath("$.registrationAvailableUntil").value(expected.getRegistrationAvailableUntil().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
+                .andExpect(jsonPath("$.googleMapCoordinates",
+                        is(expected.getGoogleMapCoordinates())))
+                .andExpect(jsonPath("$.registrationAvailableUntil")
+                        .value(expected.getRegistrationAvailableUntil()
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
     }
 
     @Test
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Verify findAll() method works")
     @Transactional
     public void findAll_ValidData_ShouldReturnEventPageableDto() throws Exception {
@@ -101,8 +109,10 @@ public class EventControllerTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Verify searchEvents() method works")
     @Transactional
     @WithMockUser(username = "user@example.com", roles = "USER")
@@ -124,8 +134,10 @@ public class EventControllerTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Verify findAllLatest()")
     @Transactional
     public void findLatest_ValidData_ShouldReturnEventDtos() throws Exception {
@@ -139,18 +151,24 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$[0].avatarImage", is(expected.getAvatarImage())))
                 .andExpect(jsonPath("$[0].descriptionSmall", is(expected.getDescriptionSmall())))
                 .andExpect(jsonPath("$[0].descriptionFull", is(expected.getDescriptionFull())))
-                .andExpect(jsonPath("$[0].maximumParticipants").value(expected.getMaximumParticipants().doubleValue()))
+                .andExpect(jsonPath("$[0].maximumParticipants")
+                        .value(expected.getMaximumParticipants().doubleValue()))
                 .andExpect(jsonPath("$[0].dateOfStartEvent")
-                        .value(expected.getDateOfStartEvent().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))))
+                        .value(expected.getDateOfStartEvent()
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))))
                 .andExpect(jsonPath("$[0].city", is(expected.getCity())))
-                .andExpect(jsonPath("$[0].google_map_coordinates", is(expected.getGoogle_map_coordinates())))
+                .andExpect(jsonPath("$[0].googleMapCoordinates",
+                        is(expected.getGoogleMapCoordinates())))
                 .andExpect(jsonPath("$[0].registrationAvailableUntil")
-                        .value(expected.getRegistrationAvailableUntil().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
+                        .value(expected.getRegistrationAvailableUntil()
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
     }
 
     @Test
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Verify findById() method works")
     @Transactional
     public void getEvenById_ValidData_ShouldReturnEventDto() throws Exception {
@@ -165,16 +183,23 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$.avatarImage", is(expected.getAvatarImage())))
                 .andExpect(jsonPath("$.descriptionSmall", is(expected.getDescriptionSmall())))
                 .andExpect(jsonPath("$.descriptionFull", is(expected.getDescriptionFull())))
-                .andExpect(jsonPath("$.maximumParticipants").value(expected.getMaximumParticipants().doubleValue()))
-                .andExpect(jsonPath("$.dateOfStartEvent").value(expected.getDateOfStartEvent().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))))
+                .andExpect(jsonPath("$.maximumParticipants")
+                        .value(expected.getMaximumParticipants().doubleValue()))
+                .andExpect(jsonPath("$.dateOfStartEvent").value(expected.getDateOfStartEvent()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))))
                 .andExpect(jsonPath("$.city", is(expected.getCity())))
-                .andExpect(jsonPath("$.google_map_coordinates", is(expected.getGoogle_map_coordinates())))
-                .andExpect(jsonPath("$.registrationAvailableUntil").value(expected.getRegistrationAvailableUntil().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
+                .andExpect(jsonPath("$.googleMapCoordinates",
+                        is(expected.getGoogleMapCoordinates())))
+                .andExpect(jsonPath("$.registrationAvailableUntil")
+                        .value(expected.getRegistrationAvailableUntil()
+                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))));
     }
 
     @Test
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Verify updateEventById() method works")
     @Transactional
     @WithMockUser(username = "organizer@example.com", roles = "ORGANIZER")
@@ -190,9 +215,12 @@ public class EventControllerTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    @DisplayName("Make sure the updateEventById() method returns an exception if the user does not have the required role")
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DisplayName("Verify updateEventById() method returns an exception "
+            + "if the user does not have the required role")
     @Transactional
     @WithMockUser(username = "user@example.com", roles = "USER")
     public void updateEventById_WithoutValidRole_ShouldReturnForbiddenStatus() throws Exception {
@@ -218,8 +246,10 @@ public class EventControllerTest {
     }
 
     @Test
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @DisplayName("Verify deleteById() method works")
     @WithMockUser(username = "admin@example.com", roles = {"ADMIN", "ORGANIZER", "USER"})
     @Transactional

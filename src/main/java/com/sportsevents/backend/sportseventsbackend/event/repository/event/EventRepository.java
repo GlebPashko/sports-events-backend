@@ -11,13 +11,13 @@ import org.springframework.data.repository.query.Param;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     @EntityGraph(attributePaths = "author")
+    Page<Event> findAll(Specification<Event> specification, Pageable pageable);
+
+    @EntityGraph(attributePaths = "author")
     Page<Event> findAll(Pageable pageable);
 
     @EntityGraph(attributePaths = "author")
     Page<Event> findAllByOrderByCreatedAtDesc(Pageable pageable);
-
-    @EntityGraph(attributePaths = "author")
-    Page<Event> findAll(Specification<Event> specification, Pageable pageable);
 
     @Query("SELECT e from Event e JOIN e.categories ec where ec.id = :categoryId")
     Page<Event> findAllByCategoryId(@Param("categoryId") Long categoryId, Pageable pageable);

@@ -13,7 +13,6 @@ import com.sportsevents.backend.sportseventsbackend.event.repository.event.Event
 import com.sportsevents.backend.sportseventsbackend.event.service.EventService;
 import com.sportsevents.backend.sportseventsbackend.user.model.Role;
 import com.sportsevents.backend.sportseventsbackend.user.model.User;
-import com.sportsevents.backend.sportseventsbackend.user.repository.UserRepository;
 import com.sportsevents.backend.sportseventsbackend.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -24,7 +23,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

@@ -9,11 +9,11 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sportsevents.backend.sportseventsbackend.event.dto.EventPageableDto;
@@ -61,7 +61,8 @@ public class CategoryControllerTest {
     @DisplayName("Verify save() method works")
     @WithMockUser(username = "admin@example.com", roles = "ADMIN")
     @Transactional
-    public void saveCategory_ValidCreateCategoryRequestDto_ShouldReturnCategoryDto() throws Exception {
+    public void saveCategory_ValidCreateCategoryRequestDto_ShouldReturnCategoryDto()
+            throws Exception {
         CategoryDto expected = getCategoryDto();
         String jsonRequest = objectMapper.writeValueAsString(getCreateCategoryRequestDto());
 
@@ -90,8 +91,10 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Verify findAll() method works")
     @WithMockUser(username = "user@example.com", roles = "USER")
-    @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
     public void findAll_WithData_ShouldCategoryDtos() throws Exception {
         CategoryDto expected = getCategoryDto();
@@ -106,8 +109,10 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("Verify findById() method works")
-    @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
     public void findById_WithValidData_ShouldCategoryDto() throws Exception {
         CategoryDto expected = getCategoryDto();
@@ -123,8 +128,10 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("Verify findById() method returns an exception when category by id not exists")
-    @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
     public void findById_WithoutValidData_ShouldReturnException() throws Exception {
         String errorMessage = "Category with id: " + INCORRECT_ID + " not found";
@@ -137,8 +144,10 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("Verify updateCategory() method works")
-    @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "admin@example.com", roles = {"ADMIN", "ORGANIZER", "USER"})
     @Transactional
     public void updateCategoryById_WithValidData_ShouldCategoryDto() throws Exception {
@@ -157,8 +166,10 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("Verify deleteCategory() method works")
-    @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/category/add-category-to-categories-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/category/delete-category-from-categories-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "admin@example.com", roles = {"ADMIN", "ORGANIZER", "USER"})
     @Transactional
     public void deleteCategory_WithValidId_ShouldDeleteCategory() throws Exception {
@@ -173,8 +184,10 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("Verify getEventsByCategoryId() method works")
-    @Sql(scripts = "classpath:database/event/create-event-with-category.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/create-event-with-category.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
     public void getEventsByCategoryId_WithValidData_ShouldEventPageableDto() throws Exception {
         EventPageableDto expected = getEventPageableDto();
@@ -191,8 +204,10 @@ public class CategoryControllerTest {
 
     @Test
     @DisplayName("Verify searchEventByCategoryId() method works")
-    @Sql(scripts = "classpath:database/event/create-event-with-category.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/create-event-with-category.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/delete-event-from-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
     public void searchEventsByCategoryId_WithValidData_ShouldEventPageableDto() throws Exception {
         mockMvc.perform(get("/categories/{id}/events/search", CORRECT_ID)

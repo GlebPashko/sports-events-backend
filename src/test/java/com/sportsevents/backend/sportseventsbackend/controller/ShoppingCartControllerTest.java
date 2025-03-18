@@ -2,7 +2,6 @@ package com.sportsevents.backend.sportseventsbackend.controller;
 
 import static com.sportsevents.backend.sportseventsbackend.util.ShoppingCartUtil.getCartItemRequestDto;
 import static com.sportsevents.backend.sportseventsbackend.util.ShoppingCartUtil.getUpdateShoppingCartRequestDto;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -12,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sportsevents.backend.sportseventsbackend.util.ShoppingCartUtil;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -65,10 +63,13 @@ public class ShoppingCartControllerTest {
     @Test
     @DisplayName("Verify addEventToShoppingCart() method works")
     @WithMockUser(username = "user@example.com", roles = "USER")
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
-    public void addEventToShoppingCart_WithValidData_ShouldReturnShoppingCartResponseDto() throws Exception {
+    public void addEventToShoppingCart_WithValidData_ShouldReturnShoppingCartResponseDto()
+            throws Exception {
         String jsonRequest = objectMapper.writeValueAsString(getCartItemRequestDto());
 
         mockMvc.perform(post("/cart")
@@ -81,10 +82,13 @@ public class ShoppingCartControllerTest {
     @Test
     @DisplayName("Verify updateQuantity() method works")
     @WithMockUser(username = "user@example.com", roles = "USER")
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
-    public void updateQuantity_WithValidData_ShouldReturnShoppingCartResponseDto() throws Exception {
+    public void updateQuantity_WithValidData_ShouldReturnShoppingCartResponseDto()
+            throws Exception {
         String jsonRequestGetCartItem = objectMapper.writeValueAsString(getCartItemRequestDto());
 
         mockMvc.perform(post("/cart")
@@ -93,23 +97,28 @@ public class ShoppingCartControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(1));
 
-        String jsonRequestUpdateCartRequest = objectMapper.writeValueAsString(getUpdateShoppingCartRequestDto());
+        String jsonRequestUpdateCartRequest = objectMapper
+                .writeValueAsString(getUpdateShoppingCartRequestDto());
 
         mockMvc.perform(put("/cart/{id}", CORRECT_ID)
                         .content(jsonRequestUpdateCartRequest)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(1))
-                .andExpect(jsonPath("$.cartItems[0].quantity").value(getUpdateShoppingCartRequestDto().getQuantity()));
+                .andExpect(jsonPath("$.cartItems[0].quantity")
+                        .value(getUpdateShoppingCartRequestDto().getQuantity()));
     }
 
     @Test
     @DisplayName("Verify deleteEventFromCart() method works")
     @WithMockUser(username = "user@example.com", roles = "USER")
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Transactional
-    public void deleteEventFromCart_WithValidData_ShouldReturnOkStatus() throws Exception {
+    public void deleteEventFromCart_WithValidData_ShouldReturnOkStatus()
+            throws Exception {
         String jsonRequest = objectMapper.writeValueAsString(getCartItemRequestDto());
 
         mockMvc.perform(post("/cart")

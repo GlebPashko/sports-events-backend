@@ -1,18 +1,15 @@
 package com.sportsevents.backend.sportseventsbackend.controller;
 
-import static com.sportsevents.backend.sportseventsbackend.util.EventTestUtil.getEventRequestDto;
 import static com.sportsevents.backend.sportseventsbackend.util.OrderTestUtil.getCreateOrderRequestDto;
 import static com.sportsevents.backend.sportseventsbackend.util.OrderTestUtil.getOrderResponseDto;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sportsevents.backend.sportseventsbackend.cart.dto.order.OrderResponseDto;
-import com.sportsevents.backend.sportseventsbackend.util.OrderTestUtil;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -54,9 +51,12 @@ public class OrderControllerTest {
 
     @Test
     @DisplayName("Verify createOrder() method works")
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/cart/add-shopping-cart-items.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/cart/add-shopping-cart-items.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "user@example.com", roles = "USER")
     @Transactional
     public void createOrder_ValidData_ShouldReturnOrderDto() throws Exception {
@@ -77,9 +77,12 @@ public class OrderControllerTest {
 
     @Test
     @DisplayName("Verify getOrders() method works")
-    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/cart/add-shopping-cart-items.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/clear-basic-db.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(scripts = "classpath:database/event/add-event-to-events-table.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/cart/add-shopping-cart-items.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/clear-basic-db.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @WithMockUser(username = "user@example.com", roles = "USER")
     @Transactional
     public void getOrders_ValidData_ShouldReturnOrderDto() throws Exception {

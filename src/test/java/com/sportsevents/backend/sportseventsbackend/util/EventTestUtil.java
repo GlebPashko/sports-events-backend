@@ -28,13 +28,7 @@ public class EventTestUtil {
         event.setDateOfStartEvent(LocalDateTime.now().plusDays(10));
         event.setPrice(new BigDecimal("50.00"));
         event.setCity("Odesa");
-        event.setGoogle_map_coordinates("0.0,0.0");
-
-//        Long authorId = CORRECT_ID;
-//        User author = new User();
-//        author.setId(authorId);
-//        event.setAuthor(author);
-
+        event.setGoogleMapCoordinates("0.0,0.0");
         event.setRegistrationAvailableUntil(LocalDateTime.now().plusDays(5));
 
         return event;
@@ -55,7 +49,7 @@ public class EventTestUtil {
         eventDto.setPrice(BigDecimal.TEN);
         eventDto.setCreatedAt(LocalDateTime.of(2026, 2, 1, 0, 0));
         eventDto.setCity("Odesa");
-        eventDto.setGoogle_map_coordinates("0.0,0.0");
+        eventDto.setGoogleMapCoordinates("0.0,0.0");
 
         eventDto.setAuthorId(2L);
 
@@ -93,7 +87,7 @@ public class EventTestUtil {
         eventRequestDto.setDateOfStartEvent(LocalDateTime.of(2026, 4, 1, 0, 0));
         eventRequestDto.setPrice(BigDecimal.TEN);
         eventRequestDto.setCity("Odesa");
-        eventRequestDto.setGoogle_map_coordinates("0.0,0.0");
+        eventRequestDto.setGoogleMapCoordinates("0.0,0.0");
 
         eventRequestDto.setRegistrationAvailableUntil(LocalDateTime.of(2026, 3, 1, 0, 0));
 

@@ -113,28 +113,28 @@ The project was designed to offer an efficient and scalable solution for managin
 
   Example of request body to **create new event**:
   ```json
-    {
-        "title": "Ранкова йога",
-        "descriptionSmall": "Розслаблююче заняття йогою для чудового початку дня.",
-        "descriptionFull": "Приєднуйтесь до енергійної йога-сесії з досвідченими інструкторами. Підходить для всіх рівнів.",
-        "avatarImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQblFSGdvcJr3CCd0CR62mLM1iO0Atnqo1BQ&s",
-        "mainImage": "https://urbanfit.pro/upload/medialibrary/c0e/xs399y7g12hzf2tazab6wsggicufp1ax.jpg",
-        "videoLink": "https://www.youtube.com/embed/v7SN-d4qXx0?si=kFnPZocJfsOChMWB",
-        "maximumParticipants": 20,
-        "dateOfStartEvent": "2026-03-10T08:00:00",
-        "price": 350,
-        "city": "Odesa",
-        "google_map_coordinates": "46.479387938787184,30.742532899465672",
-        "registrationAvailableUntil": "2026-03-09T23:59:59",
-        "categoryIds": [1, 2]
-    }
+  {
+    "title": "Ранкова йога",
+    "descriptionSmall": "Розслаблююче заняття йогою для чудового початку дня.",
+    "descriptionFull": "Приєднуйтесь до енергійної йога-сесії з досвідченими інструкторами. Підходить для всіх рівнів.",
+    "avatarImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQblFSGdvcJr3CCd0CR62mLM1iO0Atnqo1BQ&s",
+    "mainImage": "https://urbanfit.pro/upload/medialibrary/c0e/xs399y7g12hzf2tazab6wsggicufp1ax.jpg",
+    "videoLink": "https://www.youtube.com/embed/v7SN-d4qXx0?si=kFnPZocJfsOChMWB",
+    "maximumParticipants": 20,
+    "dateOfStartEvent": "2026-03-10T08:00:00",
+    "price": 350,
+    "city": "Odesa",
+    "google_map_coordinates": "46.479387938787184,30.742532899465672",
+    "registrationAvailableUntil": "2026-03-09T23:59:59",
+    "categoryIds": [1, 2]
+  }
   ```
-  If you want to add category to event, you should crate category first, or update book later. Field categoryIds is an optional field.
+  If you want to add category to event, you should crate category first, or update event later. Field categoryIds is an optional field.
 
-  To update Event you should use same request body as for creation of a new book.
+  To update Event you should use same request body as for creation of a new event.
 
 ### Category Management
-* **Create, retrieve, update, and delete book categories.**
+* **Create, retrieve, update, and delete event categories.**
   <br/><br/>
   **Available endpoints for Category Management**
 
@@ -144,7 +144,7 @@ The project was designed to offer an efficient and scalable solution for managin
   
   GET: /categories/{id}
   
-  GET: /categories/{id}/books
+  GET: /categories/{id}/events
   ``` 
   
   with ADMIN role

@@ -26,7 +26,7 @@ The project was designed to offer an efficient and scalable solution for managin
 **You can check out the web version [here](https://github.com/GlebPashko/sports-events-frontend).**
 
 ## Quick Demo Video
-[Дивитись відео на Loom]()
+[Дивитись відео на Loom](https://www.loom.com/share/3d68c38dcc2847d08202bb8d00b82a6d)
 
 ## Technologies Used
 * **Spring Boot**: Is a powerful framework for building Java Applications.

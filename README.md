@@ -166,7 +166,7 @@ The project was designed to offer an efficient and scalable solution for managin
 
 ### Shopping Cart and Order Management
 
-* Add books to the shopping cart.
+* Add events to the shopping cart.
 * View and manage shopping cart items.
 * Place orders, update order status, and retrieve order details.
   <br/><br/>
@@ -190,7 +190,7 @@ The project was designed to offer an efficient and scalable solution for managin
   }
   ```
   
-  Example of request body to **update book qty in cart**:
+  Example of request body to **update events qty in cart**:
   ```json
   {
   "quantity": 1
